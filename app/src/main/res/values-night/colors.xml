@@ -25,4 +25,5 @@
     <color name="picker_text_on">@color/white</color>
     <color name="picker_text_off">@color/gray_800</color>
     <color name="picker">@color/gray_800</color>
+    <color name="card_number_color">@color/gray_900</color>
 </resources>
