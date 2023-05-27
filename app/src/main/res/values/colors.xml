@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="gray_900">#212121</color>
+    <color name="gray_800">#424242</color>
+    <color name="gray_400">#BDBDBD</color>
+    <color name="gray_200">#EEEEEE</color>
+    <color name="orange_400">#FFA726</color>
+
+    <color name="red_300">#FF8A65</color>
+    <color name="green_300">#AED581</color>
+
+    //
+
+    <color name="main_text_color">@color/black</color>
+    <color name="acc_text_color">@color/gray_400</color>
+    <color name="background_main">@color/white</color>
+    <color name="background_card">@color/white</color>
+    <color name="background_search">@color/gray_200</color>
+    <color name="background_time">@color/gray_200</color>
+    <color name="background_week_item">@color/gray_200</color>
+    <color name="color_on">@color/black</color>
+    <color name="color_off">@color/white</color>
+    <color name="picker_text_on">@color/black</color>
+    <color name="picker_text_off">@color/gray_200</color>
+    <color name="picker">@color/white</color>
+</resources>
