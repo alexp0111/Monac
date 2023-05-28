@@ -10,6 +10,6 @@
     <dimen name="half_card_corner_radius">8dp</dimen>
     <dimen name="round">1000dp</dimen>
     <dimen name="cl_elevation">4dp</dimen>
-    <dimen name="card_payment_height">200dp</dimen>
+    <dimen name="card_payment_height">232dp</dimen>
     <dimen name="card_transaction_height">80dp</dimen>
 </resources>
