@@ -28,9 +28,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             CardAdapter(
                 arrayListOf(
                     Card(name = "Заработная плата", value = 2848.0),
-                    Card(name = "Стипендия", value = 0.001)
-                ), binding.vpCards
-            )
+                    Card(name = "Стипендия", value = 0.001),
+                    Card(name = "bob", value = 0.001)
+                ))
         binding.vpCards.adapter = cardAdapter
 
         setUpTransformer(binding)
@@ -41,7 +41,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         transformer.addTransformer(MarginPageTransformer(40))
         transformer.addTransformer { page, position ->
             val r = 1 - abs(position)
-            page.scaleY = 0.85f + r * 0.12f
+            page.scaleY = 0.85f + r * 0.15f
         }
         binding.vpCards.setPageTransformer(transformer)
     }
