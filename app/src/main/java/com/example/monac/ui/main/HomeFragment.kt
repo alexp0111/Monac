@@ -15,7 +15,9 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.monac.R
 import com.example.monac.adapters.CardAdapter
 import com.example.monac.adapters.TransactionAdapter
+import com.example.monac.adapters.UserAdapter
 import com.example.monac.data.Card
+import com.example.monac.data.PaymentTransaction
 import com.example.monac.data.TransactionUser
 import com.example.monac.data.getActualContacts
 import com.example.monac.databinding.FragmentHomeBinding
@@ -26,6 +28,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var fragmentHomeBinding: FragmentHomeBinding? = null
 
     private val transactionUserAdapter by lazy {
+        UserAdapter(requireContext())
+    }
+
+    private val transactionrAdapter by lazy {
         TransactionAdapter(requireContext())
     }
 
@@ -50,19 +56,45 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 it?.forEach {
                     Log.d(TAG, it.toString())
                 }
-                it?.let { list -> initTransactionRecycler(binding, list) }
+                it?.let { list -> initUserRecycler(binding, list) }
             }
         }
 
-        //Transaction Adapter
         // TODO:
         //  1. Goto viewmodel
         //  2. Check for new contacts
         //  3. If there are new contacts - add info to DB
         //  4. Get list of users from DB & display it
+
+        // RecentTransactionsAdapter
+        initCardPager(
+            binding,
+            listOf(
+                PaymentTransaction(),
+                PaymentTransaction(),
+                PaymentTransaction(),
+                PaymentTransaction(),
+                PaymentTransaction(),
+                PaymentTransaction(),
+                PaymentTransaction(),
+                PaymentTransaction()
+            )
+        )
     }
 
-    private fun initTransactionRecycler(
+    private fun initCardPager(
+        binding: FragmentHomeBinding,
+        list: List<PaymentTransaction>
+    ) {
+        val manager = LinearLayoutManager(context)
+        manager.orientation = LinearLayoutManager.VERTICAL
+        binding.rvRecent.layoutManager = manager
+        binding.rvRecent.adapter = transactionrAdapter
+
+        transactionrAdapter.updateList(ArrayList(list))
+    }
+
+    private fun initUserRecycler(
         binding: FragmentHomeBinding,
         list: List<TransactionUser>
     ) {

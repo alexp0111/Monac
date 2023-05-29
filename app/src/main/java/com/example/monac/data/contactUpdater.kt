@@ -4,15 +4,24 @@ import android.content.Context
 import android.provider.ContactsContract
 import kotlin.math.absoluteValue
 
-fun getActualContacts(context: Context): ArrayList<TransactionUser>?{
+fun getActualContacts(context: Context): ArrayList<TransactionUser>? {
     val list = hashSetOf<TransactionUser>()
-    val contacts = context.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null)
+    val contacts = context.contentResolver.query(
+        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+        null,
+        null,
+        null,
+        null
+    )
         ?: return null
 
-    while (contacts.moveToNext()){
-        val name = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME).absoluteValue)
-        val phone = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER).absoluteValue)
-        val uri = contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI).absoluteValue)
+    while (contacts.moveToNext()) {
+        val name =
+            contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME).absoluteValue)
+        val phone =
+            contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER).absoluteValue)
+        val uri =
+            contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI).absoluteValue)
 
         list.add(TransactionUser(name = name, phone = phone, uri = uri))
     }

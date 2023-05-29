@@ -5,43 +5,32 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.monac.data.PaymentTransaction
 import com.example.monac.data.TransactionUser
+import com.example.monac.databinding.ItemTransactionBinding
 import com.example.monac.databinding.ItemUserAddBinding
 import com.example.monac.databinding.ItemUserBinding
 
 class TransactionAdapter(
     val context: Context,
 ) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
-    private var transactionList: ArrayList<TransactionUser> = arrayListOf()
+    private var transactionList: ArrayList<PaymentTransaction> = arrayListOf()
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        transactionList.add(0, TransactionUser(name = "for adding"))
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
+        val view =
+            ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TransactionViewHolder(view)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == 0) {
-            val view =
-                ItemUserAddBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return TransactionUserAddViewHolder(view)
-        }
-        val view = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TransactionUserViewHolder(view)
+    override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
+        val item = transactionList[position]
+        holder.bind(item)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder.itemViewType == 0) {
-            // addition segment
-        } else {
-            val item = transactionList[position]
-            (holder as TransactionUserViewHolder).bind(item)
-        }
-    }
-
-    fun updateList(list: ArrayList<TransactionUser>) {
-        list.add(0, TransactionUser(name = "for adding"))
+    fun updateList(list: ArrayList<PaymentTransaction>) {
         this.transactionList = list
         notifyDataSetChanged()
     }
@@ -54,19 +43,14 @@ class TransactionAdapter(
         return transactionList.size
     }
 
-    inner class TransactionUserViewHolder(val binding: ItemUserBinding) :
+    inner class TransactionViewHolder(val binding: ItemTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(transactionUser: TransactionUser) {
-            binding.tvName.text = transactionUser.name
-            binding.tvName.isSelected = true
-            transactionUser.uri?.let {
-                Glide.with(context)
-                    .load(it)
-                    .into(binding.ivAvatar)
-            }
+        fun bind(transaction: PaymentTransaction) {
+            binding.tvName.text = "Подписка на яндекс музыку"
+            // set uri
+            binding.tvDate.text = transaction.date.dayOfMonth.toString() + " " + transaction.date.month.name
+            binding.tvTime.text = transaction.date.hour.toString() + ":" + transaction.date.minute.toString()
+            binding.tvValue.text = transaction.value.toString()
         }
     }
-
-    class TransactionUserAddViewHolder(val binding: ItemUserAddBinding) :
-        RecyclerView.ViewHolder(binding.root) {}
 }

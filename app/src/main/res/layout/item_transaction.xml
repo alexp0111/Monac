@@ -5,7 +5,8 @@
     style="@style/MyCardView"
     android:layout_width="match_parent"
     android:layout_height="@dimen/card_transaction_height"
-    android:layout_margin="@dimen/basic_margin">
+    android:layout_marginVertical="@dimen/half_basic_margin"
+    android:layout_marginHorizontal="@dimen/basic_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
