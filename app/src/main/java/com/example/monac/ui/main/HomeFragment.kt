@@ -9,11 +9,14 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.monac.R
 import com.example.monac.adapters.CardAdapter
+import com.example.monac.adapters.TransactionAdapter
 import com.example.monac.data.Card
+import com.example.monac.data.TransactionUser
 import com.example.monac.data.getActualContacts
 import com.example.monac.databinding.FragmentHomeBinding
 import kotlin.math.abs
@@ -21,6 +24,10 @@ import kotlin.math.abs
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private val TAG = "HOME_FRAGMENT"
     private var fragmentHomeBinding: FragmentHomeBinding? = null
+
+    private val transactionUserAdapter by lazy {
+        TransactionAdapter(requireContext())
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,10 +43,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         // Card Adapter
         initCardPager(binding)
 
+        //Transaction Adapter
         if (checkPermission(Manifest.permission.READ_CONTACTS, 1)) {
             val conts = getActualContacts(requireContext())
-            conts?.forEach {
-                Log.d(TAG, it.toString())
+            conts.let {
+                it?.forEach {
+                    Log.d(TAG, it.toString())
+                }
+                it?.let { list -> initTransactionRecycler(binding, list) }
             }
         }
 
@@ -49,6 +60,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         //  2. Check for new contacts
         //  3. If there are new contacts - add info to DB
         //  4. Get list of users from DB & display it
+    }
+
+    private fun initTransactionRecycler(
+        binding: FragmentHomeBinding,
+        list: List<TransactionUser>
+    ) {
+        val manager = LinearLayoutManager(context)
+        manager.orientation = LinearLayoutManager.HORIZONTAL
+        binding.rvTransactions.layoutManager = manager
+        binding.rvTransactions.adapter = transactionUserAdapter
+
+        transactionUserAdapter.updateList(ArrayList(list.sortedWith(compareBy { it.name })))
     }
 
     private fun initCardPager(binding: FragmentHomeBinding) {

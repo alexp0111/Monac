@@ -3,8 +3,8 @@ package com.example.monac.data
 data class TransactionUser(
     val id: String = "-1",
     val name: String = "",
-    val phone: String?,
-    val uri: String?,
+    val phone: String? = null,
+    val uri: String? = null,
     val comments: String = ""
 ) {
     override fun toString(): String {
