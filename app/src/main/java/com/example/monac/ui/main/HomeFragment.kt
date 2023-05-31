@@ -53,6 +53,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 .commit()
         }
 
+        binding.fab.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.container, AddTranscationFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         // Card Adapter
         initCardPager(binding)
 
