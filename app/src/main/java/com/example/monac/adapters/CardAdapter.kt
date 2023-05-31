@@ -7,7 +7,10 @@ import com.example.monac.data.Card
 import com.example.monac.databinding.ItemCardAddBinding
 import com.example.monac.databinding.ItemCardBinding
 
-class CardAdapter(private val cardList: ArrayList<Card>) :
+class CardAdapter(
+    private val cardList: ArrayList<Card>,
+    val onItemClicked: (Int, Card) -> Unit
+    ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -16,8 +19,9 @@ class CardAdapter(private val cardList: ArrayList<Card>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == cardList.size-1){
-            val view = ItemCardAddBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        if (viewType == cardList.size - 1) {
+            val view =
+                ItemCardAddBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             return CardAddViewHolder(view)
         }
         val view = ItemCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,7 +29,7 @@ class CardAdapter(private val cardList: ArrayList<Card>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder.itemViewType == cardList.size-1){
+        if (holder.itemViewType == cardList.size - 1) {
             // addition segment
         } else {
             val item = cardList[position]
@@ -41,7 +45,7 @@ class CardAdapter(private val cardList: ArrayList<Card>) :
         return cardList.size
     }
 
-    class CardViewHolder(val binding: ItemCardBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CardViewHolder(val binding: ItemCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(card: Card) {
             binding.tvName.text = card.name
             binding.tvValue.text = buildString {
@@ -53,10 +57,13 @@ class CardAdapter(private val cardList: ArrayList<Card>) :
             binding.card.setCardBackgroundColor(card.color)
 
             // TODO: payment instrument
+
+            binding.card.setOnClickListener { onItemClicked.invoke(absoluteAdapterPosition, card) }
         }
     }
 
-    class CardAddViewHolder(val binding: ItemCardAddBinding) : RecyclerView.ViewHolder(binding.root) {
+    class CardAddViewHolder(val binding: ItemCardAddBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
     }
 }

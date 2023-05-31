@@ -15,7 +15,9 @@ class AddTranscationFragment : Fragment(R.layout.fragment_add_transaction) {
         val binding = FragmentAddTransactionBinding.bind(view)
         fragmentAddTransactionBinding = binding
 
-
+        binding.ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     override fun onDestroy() {

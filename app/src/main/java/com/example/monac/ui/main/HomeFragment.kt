@@ -28,6 +28,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val TAG = "HOME_FRAGMENT"
     private var fragmentHomeBinding: FragmentHomeBinding? = null
 
+    private val cardAdapter by lazy {
+        CardAdapter(
+            arrayListOf(
+                Card(name = "Заработная плата", value = 2848.0),
+                Card(name = "Стипендия", value = 0.001),
+                Card(name = "bob", value = 0.001)
+            ),
+            onItemClicked = { pos, item ->
+                parentFragmentManager.beginTransaction().addToBackStack(null)
+                    .replace(R.id.container, InfoFragment()).commit()
+            }
+        )
+    }
+
     private val transactionUserAdapter by lazy {
         UserAdapter(requireContext())
     }
@@ -54,7 +68,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         binding.fab.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.container, AddTranscationFragment())
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.container, AddTranscationFragment())
                 .addToBackStack(null)
                 .commit()
         }
@@ -125,14 +140,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun initCardPager(binding: FragmentHomeBinding) {
-        var cardAdapter =
-            CardAdapter(
-                arrayListOf(
-                    Card(name = "Заработная плата", value = 2848.0),
-                    Card(name = "Стипендия", value = 0.001),
-                    Card(name = "bob", value = 0.001)
-                )
-            )
         binding.vpCards.adapter = cardAdapter
 
         setUpTransformer(binding)

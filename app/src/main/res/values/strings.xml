@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Monac</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="day">24h</string>
+    <string name="week">7d</string>
+    <string name="month">1m</string>
+    <string name="quorter">3m</string>
+    <string name="year">1y</string>
+    <string name="all">All</string>
 </resources>
