@@ -21,6 +21,7 @@ import com.example.monac.data.PaymentTransaction
 import com.example.monac.data.TransactionUser
 import com.example.monac.data.getActualContacts
 import com.example.monac.databinding.FragmentHomeBinding
+import com.example.monac.ui.SettingsFragment
 import kotlin.math.abs
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -46,6 +47,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val binding = FragmentHomeBinding.bind(view)
         fragmentHomeBinding = binding
 
+        binding.ivSettings.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.container, SettingsFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
         // Card Adapter
         initCardPager(binding)
 
@@ -70,6 +77,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         initCardPager(
             binding,
             listOf(
+                PaymentTransaction(),
+                PaymentTransaction(),
+                PaymentTransaction(),
+                PaymentTransaction(),
+                PaymentTransaction(),
                 PaymentTransaction(),
                 PaymentTransaction(),
                 PaymentTransaction(),

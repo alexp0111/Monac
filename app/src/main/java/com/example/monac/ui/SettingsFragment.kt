@@ -14,6 +14,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         val binding = FragmentSettingsBinding.bind(view)
         fragmentSettingsBinding = binding
+
+        binding.ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     override fun onDestroy() {
