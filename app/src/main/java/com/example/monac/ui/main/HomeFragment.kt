@@ -22,6 +22,7 @@ import com.example.monac.data.TransactionUser
 import com.example.monac.data.getActualContacts
 import com.example.monac.databinding.FragmentHomeBinding
 import com.example.monac.ui.SettingsFragment
+import com.example.monac.ui.main.mods.NewTransactionTypeFragment
 import kotlin.math.abs
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -43,7 +44,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private val transactionUserAdapter by lazy {
-        UserAdapter(requireContext())
+        UserAdapter(requireContext(),
+            onItemClicked = { pos, item ->
+                // todo: new transaction to user
+            },
+            onItemAddClicked = {
+                parentFragmentManager.beginTransaction().addToBackStack(null)
+                    .replace(R.id.container, NewTransactionTypeFragment()).commit()
+            }
+        )
     }
 
     private val transactionrAdapter by lazy {

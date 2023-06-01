@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.monac.data.Card
 import com.example.monac.data.TransactionUser
 import com.example.monac.databinding.ItemUserAddBinding
 import com.example.monac.databinding.ItemUserBinding
 
 class UserAdapter(
     val context: Context,
+    val onItemClicked: (Int, TransactionUser) -> Unit,
+    val onItemAddClicked: () -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -34,6 +37,7 @@ class UserAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder.itemViewType == 0) {
             // addition segment
+            (holder as TransactionUserAddViewHolder).bind()
         } else {
             val item = userList[position]
             (holder as TransactionUserViewHolder).bind(item)
@@ -64,9 +68,19 @@ class UserAdapter(
                     .load(it)
                     .into(binding.ivAvatar)
             }
+
+            binding.ivAvatar.setOnClickListener {
+                onItemClicked.invoke(absoluteAdapterPosition, transactionUser)
+            }
         }
     }
 
-    class TransactionUserAddViewHolder(val binding: ItemUserAddBinding) :
-        RecyclerView.ViewHolder(binding.root) {}
+    inner class TransactionUserAddViewHolder(val binding: ItemUserAddBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(){
+            binding.ivAvatar.setOnClickListener {
+                onItemAddClicked.invoke()
+            }
+        }
+    }
 }
