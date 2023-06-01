@@ -9,7 +9,8 @@ import com.example.monac.databinding.ItemCardBinding
 
 class CardAdapter(
     private val cardList: ArrayList<Card>,
-    val onItemClicked: (Int, Card) -> Unit
+    val onItemClicked: (Int, Card) -> Unit,
+    val onItemAddClicked: () -> Unit
     ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -30,7 +31,7 @@ class CardAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder.itemViewType == cardList.size - 1) {
-            // addition segment
+            (holder as CardAddViewHolder).bind()
         } else {
             val item = cardList[position]
             (holder as CardViewHolder).bind(item)
@@ -62,8 +63,10 @@ class CardAdapter(
         }
     }
 
-    class CardAddViewHolder(val binding: ItemCardAddBinding) :
+    inner class CardAddViewHolder(val binding: ItemCardAddBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
+            fun bind(){
+                binding.clAdd.setOnClickListener { onItemAddClicked.invoke() }
+            }
     }
 }
