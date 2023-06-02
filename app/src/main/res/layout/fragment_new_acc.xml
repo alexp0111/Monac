@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_main">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_header"
@@ -41,6 +42,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_margin="@dimen/basic_margin"
+        android:backgroundTint="@color/background_main"
         app:cardCornerRadius="@dimen/round"
         app:cardElevation="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -77,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_name">
 
         <EditText
-            android:id="@+id/et_sum"
+            android:id="@+id/et_name"
             style="@style/TextHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -204,6 +206,6 @@
         app:cornerRadius="@dimen/half_card_corner_radius"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_type" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

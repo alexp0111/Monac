@@ -7,7 +7,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container"
-        android:name="com.example.monac.ui.main.HomeFragment"
+        android:name="com.example.monac.ui.account.StartFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -16,7 +16,7 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.monac.R
 import com.example.monac.adapters.CardAdapter
 import com.example.monac.adapters.TransactionAdapter
-import com.example.monac.adapters.UserAdapter
+import com.example.monac.adapters.TransactionUserAdapter
 import com.example.monac.data.Card
 import com.example.monac.data.PaymentTransaction
 import com.example.monac.data.TransactionUser
@@ -55,7 +55,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private val transactionUserAdapter by lazy {
-        UserAdapter(requireContext(),
+        TransactionUserAdapter(requireContext(),
             onItemClicked = { pos, item ->
                 // todo: new transaction to user
             },

@@ -3,25 +3,24 @@ package com.example.monac.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.monac.data.user.User
+import com.example.monac.data.TransactionUser
 import com.example.monac.databinding.ItemUserAddBinding
 import com.example.monac.databinding.ItemUserBinding
 
-class UserAdapter(
+class TransactionUserAdapter(
     val context: Context,
-    val onItemClicked: (Int, User) -> Unit,
+    val onItemClicked: (Int, TransactionUser) -> Unit,
     val onItemAddClicked: () -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var userList: ArrayList<User> = arrayListOf()
+    private var userList: ArrayList<TransactionUser> = arrayListOf()
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        userList.add(0, User(name = "for adding"))
+        userList.add(0, TransactionUser(name = "for adding"))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -44,8 +43,8 @@ class UserAdapter(
         }
     }
 
-    fun updateList(list: ArrayList<User>) {
-        if (list.isEmpty() || list.first().id != -1L) list.add(0, User(id = -1L))
+    fun updateList(list: ArrayList<TransactionUser>) {
+        list.add(0, TransactionUser(name = "for adding"))
         this.userList = list
         notifyDataSetChanged()
     }
@@ -60,17 +59,17 @@ class UserAdapter(
 
     inner class TransactionUserViewHolder(val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: User) {
-            binding.tvName.text = user.name
+        fun bind(transactionUser: TransactionUser) {
+            binding.tvName.text = transactionUser.name
             binding.tvName.isSelected = true
-            user.imageUri.toUri().let {
+            transactionUser.uri?.let {
                 Glide.with(context)
                     .load(it)
                     .into(binding.ivAvatar)
             }
 
             binding.ivAvatar.setOnClickListener {
-                onItemClicked.invoke(absoluteAdapterPosition, user)
+                onItemClicked.invoke(absoluteAdapterPosition, transactionUser)
             }
         }
     }
