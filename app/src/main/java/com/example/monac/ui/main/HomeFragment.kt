@@ -9,6 +9,7 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -24,11 +25,16 @@ import com.example.monac.databinding.FragmentHomeBinding
 import com.example.monac.ui.SettingsFragment
 import com.example.monac.ui.main.mods.NewCardTypeFragment
 import com.example.monac.ui.main.mods.NewTransactionTypeFragment
+import com.example.monac.view_model.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private val TAG = "HOME_FRAGMENT"
     private var fragmentHomeBinding: FragmentHomeBinding? = null
+
+    private val userViewModel: UserViewModel by viewModels()
 
     private val cardAdapter by lazy {
         CardAdapter(

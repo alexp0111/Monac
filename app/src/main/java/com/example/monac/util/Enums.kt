@@ -7,3 +7,7 @@ enum class PaymentInstruments {
 enum class PaymentType {
     CATEGORY, TRANSACTION
 }
+
+enum class UserType {
+    STANDART, CHILD
+}
