@@ -18,6 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.monac.R
 import com.example.monac.adapters.CardAdapter
@@ -47,6 +48,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var fragmentHomeBinding: FragmentHomeBinding? = null
 
     private var currentUser = User()
+    private var currentCardIndex = 0
 
     private val userViewModel: UserViewModel by viewModels()
     private val cardViewModel: CardViewModel by viewModels()
@@ -220,6 +222,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun initCardPager(binding: FragmentHomeBinding) {
         binding.vpCards.adapter = cardAdapter
+
+        binding.vpCards.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentCardIndex = position
+                if (currentUser.id != null && cardList.isNotEmpty() && position != cardList.size - 1 && cardList[position].id != null)
+                    transactionViewModel.getAllTransactionForUserAtCard(
+                        currentUser.id!!,
+                        cardList[position].id!!
+                    )
+            }
+        })
 
         setUpTransformer(binding)
     }

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_main">
+    android:background="@color/background_main"
+    app:layoutDescription="@xml/fragment_add_transaction_scene">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/header_height"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -25,7 +26,7 @@
         <TextView
             style="@style/TextHeader"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/basic_margin"
             android:text="Новая запись"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -49,12 +50,12 @@
         style="@style/TextHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/basic_margin"
         android:layout_marginHorizontal="@dimen/basic_margin"
+        android:layout_marginTop="@dimen/basic_margin"
         android:layout_marginBottom="@dimen/half_basic_margin"
         android:text="Детали"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/nsv"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vp_cards" />
 
@@ -212,7 +213,7 @@
                     android:gravity="center|bottom"
                     android:hint="Название категории"
                     android:imeOptions="actionDone"
-                    android:inputType="numberDecimal"
+                    android:inputType="text"
                     android:lines="1"
                     android:maxLines="1"
                     android:scrollHorizontally="true"
@@ -291,8 +292,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/basic_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:background="@drawable/card_add"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_comments">
 
                 <EditText
@@ -330,4 +331,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>
