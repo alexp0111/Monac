@@ -11,7 +11,7 @@ import kotlinx.parcelize.Parcelize
 data class User(
     @PrimaryKey(autoGenerate = true) val id: Long? = null,
     val name: String = "",
-    val password: String = "",
+    var password: String = "",
     val imageUri: String = "",
     val type: UserType = UserType.STANDART,
 ) : Parcelable {

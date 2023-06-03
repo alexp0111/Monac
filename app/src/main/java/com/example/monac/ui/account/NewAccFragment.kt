@@ -1,5 +1,6 @@
 package com.example.monac.ui.account
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -33,12 +34,18 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
     private val selectImageIntent =
         registerForActivityResult(ActivityResultContracts.OpenDocument())
         { uri ->
-            selectedUri = uri
-            Toast.makeText(requireContext(), uri.toString(), Toast.LENGTH_SHORT).show()
-            fragmentNewAccBinding?.ivAvatar?.let {
-                Glide.with(requireContext())
-                    .load(uri)
-                    .into(it)
+            if (uri != null) {
+                requireContext().contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                selectedUri = uri
+                Toast.makeText(requireContext(), uri.toString(), Toast.LENGTH_SHORT).show()
+                fragmentNewAccBinding?.ivAvatar?.let {
+                    Glide.with(requireContext())
+                        .load(uri)
+                        .into(it)
+                }
             }
         }
 
@@ -60,7 +67,7 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
                     imageUri = selectedUri.toString(),
                     type = type
                 )
-                if (validation(this)) userViewModel.registerNewAccount(user) { isSuccess ->
+                if (validation(this)) userViewModel.updateUser(user) { isSuccess ->
                     if (isSuccess) {
                         Snackbar.make(
                             requireView(),

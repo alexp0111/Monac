@@ -35,7 +35,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun registerNewAccount(user: User, isSuccess: (Boolean) -> Unit){
+    fun updateUser(user: User, isSuccess: (Boolean) -> Unit){
         viewModelScope.launch(Dispatchers.IO) {
             isSuccess.invoke(repository.insertUser(user))
         }
