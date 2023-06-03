@@ -1,6 +1,7 @@
 package com.example.monac.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
@@ -64,6 +65,7 @@ class UserAdapter(
             binding.tvName.text = user.name
             binding.tvName.isSelected = true
             user.imageUri.toUri().let {
+                Log.d("USERADAPTER", it.toString())
                 Glide.with(context)
                     .load(it)
                     .into(binding.ivAvatar)

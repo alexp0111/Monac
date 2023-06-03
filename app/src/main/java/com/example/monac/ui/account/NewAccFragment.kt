@@ -1,5 +1,6 @@
 package com.example.monac.ui.account
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.monac.R
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentNewAccBinding
+import com.example.monac.ui.main.HomeFragment
 import com.example.monac.util.UserType
 import com.example.monac.view_model.UserViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -26,7 +28,7 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
     private var selectedUri = Uri.EMPTY
     private var type = UserType.STANDART
 
-    private val selectImageIntent = registerForActivityResult(ActivityResultContracts.GetContent())
+    private val selectImageIntent = registerForActivityResult(ActivityResultContracts.OpenDocument())
     { uri ->
         selectedUri = uri
         Toast.makeText(requireContext(), uri.toString(), Toast.LENGTH_SHORT).show()
@@ -56,7 +58,24 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
                         imageUri = selectedUri.toString(),
                         type = type
                     )
-                )
+                ) { isSuccess ->
+                    if (isSuccess) {
+                        Snackbar.make(
+                            requireView(),
+                            "Регистрация пройдена успешно",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+
+                        // save current id in sharedpref
+
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.container, HomeFragment()).commit()
+                    } else Snackbar.make(
+                        requireView(),
+                        "Зарегистрировать пользователя не удалось",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
                 else Snackbar.make(
                     requireView(),
                     "Заполните все данные, пожалуйста",
@@ -66,7 +85,7 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
         }
 
         binding.ivAvatar.setOnClickListener {
-            selectImageIntent.launch("image/*")
+            selectImageIntent.launch(arrayOf("image/*"))
         }
 
         binding.apply {

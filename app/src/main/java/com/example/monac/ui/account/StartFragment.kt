@@ -30,8 +30,13 @@ class StartFragment : Fragment(R.layout.fragment_start) {
     private val userAdapter by lazy {
         UserAdapter(requireContext(),
             onItemClicked = { pos, item ->
-                // parentFragmentManager.beginTransaction().addToBackStack(null)
-                //     .replace(R.id.container, InfoFragment()).commit()
+                val fragment = LogInFragment()
+                val bundle = Bundle()
+                bundle.putParcelable("user", item)
+                fragment.arguments = bundle
+
+                parentFragmentManager.beginTransaction().addToBackStack(null)
+                    .replace(R.id.container, fragment).commit()
             },
             onItemAddClicked = {
                 parentFragmentManager.beginTransaction().addToBackStack(null)

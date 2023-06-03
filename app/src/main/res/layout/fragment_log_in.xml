@@ -18,7 +18,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_margin="@dimen/basic_margin"
-            android:backgroundTint="@color/green_300"
+            android:backgroundTint="@color/background_main"
             app:cardCornerRadius="@dimen/round"
             app:cardElevation="0dp"
             app:layout_constraintDimensionRatio="1:1"
