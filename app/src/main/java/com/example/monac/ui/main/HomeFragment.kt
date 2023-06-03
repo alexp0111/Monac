@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,14 +18,16 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import com.bumptech.glide.Glide
 import com.example.monac.R
 import com.example.monac.adapters.CardAdapter
 import com.example.monac.adapters.TransactionAdapter
 import com.example.monac.adapters.TransactionUserAdapter
-import com.example.monac.data.card.Card
 import com.example.monac.data.PaymentTransaction
 import com.example.monac.data.TransactionCategory
+import com.example.monac.data.card.Card
 import com.example.monac.data.getActualContacts
+import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentHomeBinding
 import com.example.monac.ui.SettingsFragment
 import com.example.monac.ui.main.mods.NewCardTypeFragment
@@ -41,6 +44,8 @@ import kotlin.math.abs
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private val TAG = "HOME_FRAGMENT"
     private var fragmentHomeBinding: FragmentHomeBinding? = null
+
+    private var currentUser = User()
 
     private val userViewModel: UserViewModel by viewModels()
     private val cardViewModel: CardViewModel by viewModels()
@@ -79,6 +84,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         checkPermission(Manifest.permission.READ_CONTACTS, 1)
+        currentUser = getCurrentUser(requireActivity())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,6 +94,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         fragmentHomeBinding = binding
 
         observers(binding)
+
+        Glide.with(requireContext())
+            .load(currentUser.imageUri.toUri())
+            .into(binding.ivAvatar)
+
+        binding.tvHelloName.text = buildString {
+            append("Здравствуйте, ")
+            append(currentUser.name)
+            append("!")
+        }
 
         binding.ivSettings.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.container, SettingsFragment())
