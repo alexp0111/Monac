@@ -8,7 +8,7 @@
         android:id="@+id/cv_avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:backgroundTint="@color/background_main"
+        android:backgroundTint="@color/picker_text_off"
         android:layout_margin="@dimen/basic_margin"
         app:cardCornerRadius="@dimen/round"
         app:cardElevation="0dp"

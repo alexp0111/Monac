@@ -1,10 +1,13 @@
-package com.example.monac.data
+package com.example.monac.data.card
 
 import android.graphics.Color
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.monac.util.PaymentInstruments
 
+@Entity(tableName = "cards")
 data class Card(
-    val id: Long? = null,
+    @PrimaryKey(autoGenerate = true) val id: Long? = null,
     val userID: Long? = null,
     val name: String = "",
     val value: Double = 0.0,

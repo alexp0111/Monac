@@ -1,22 +1,28 @@
 package com.example.monac.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.monac.data.Card
+import com.example.monac.R
+import com.example.monac.data.card.Card
+import com.example.monac.data.user.User
 import com.example.monac.databinding.ItemCardAddBinding
 import com.example.monac.databinding.ItemCardBinding
+import com.example.monac.util.PaymentInstruments
 
 class CardAdapter(
-    private val cardList: ArrayList<Card>,
+    private val context: Context,
     val onItemClicked: (Int, Card) -> Unit,
     val onItemAddClicked: () -> Unit
     ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    private var cardList: ArrayList<Card> = arrayListOf()
+
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        cardList.add(Card(name = "for adding"))
+        if (cardList.isEmpty()) cardList.add(Card(id = -1L))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -38,6 +44,12 @@ class CardAdapter(
         }
     }
 
+    fun updateList(list: ArrayList<Card>) {
+        if (list.isEmpty() || list.last().id != -1L) list.add(Card(id = -1L))
+        this.cardList = list
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
         return position
     }
@@ -57,7 +69,9 @@ class CardAdapter(
 
             binding.card.setCardBackgroundColor(card.color)
 
-            // TODO: payment instrument
+            if (card.paymentInstrument == PaymentInstruments.MASTERCARD)
+                binding.iv.setImageResource(R.drawable.master_card)
+            else binding.iv.setImageResource(R.drawable.mir_pay)
 
             binding.card.setOnClickListener { onItemClicked.invoke(absoluteAdapterPosition, card) }
         }

@@ -2,8 +2,8 @@ package com.example.monac.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.monac.data.user.UserRepository
-import com.example.monac.data.user.User
+import com.example.monac.data.card.Card
+import com.example.monac.data.card.CardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,32 +18,33 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class UserViewModel @Inject constructor(
-    private val repository: UserRepository
+class CardViewModel @Inject constructor(
+    private val repository: CardRepository
 ) : ViewModel() {
 
-    private val userChannel = Channel<String>()
-    private val userChannelFlow = userChannel.receiveAsFlow()
+    private val cardChannel = Channel<Long>()
+    private val cardChannelFlow = cardChannel.receiveAsFlow()
 
-    val allUsers = userChannelFlow.flatMapLatest {
-        repository.getAllUsers()
+    val allCardsForUser = cardChannelFlow.flatMapLatest { userID ->
+        repository.getAllCardsForUser(userID)
     }.stateIn(viewModelScope.plus(Dispatchers.IO), SharingStarted.Lazily, null)
 
-    fun getAllUsers() {
+    fun getAllCardsForUser(userID: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            userChannel.send("New request")
+            cardChannel.send(userID)
         }
     }
 
-    fun updateUser(user: User, isSuccess: (Boolean) -> Unit){
+    fun updateCard(card: Card, isSuccess: (Boolean) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-            isSuccess.invoke(repository.insertUser(user))
+            isSuccess.invoke(repository.insertCard(card))
         }
     }
 
-    fun deleteAllUsers(){
+    fun deleteAllCardsForUser(userID: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAllUsers()
+            repository.deleteAllCardsForUser(userID)
         }
     }
+
 }

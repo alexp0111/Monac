@@ -1,4 +1,4 @@
-package com.example.monac.data
+package com.example.monac.data.user
 
 import com.example.monac.data.user.User
 import com.example.monac.data.user.UserDatabase
