@@ -5,22 +5,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.monac.data.TransactionUser
+import com.example.monac.data.TransactionCategory
 import com.example.monac.databinding.ItemUserAddBinding
 import com.example.monac.databinding.ItemUserBinding
 
 class TransactionUserAdapter(
     val context: Context,
-    val onItemClicked: (Int, TransactionUser) -> Unit,
+    val onItemClicked: (Int, TransactionCategory) -> Unit,
     val onItemAddClicked: () -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var userList: ArrayList<TransactionUser> = arrayListOf()
+    private var userList: ArrayList<TransactionCategory> = arrayListOf()
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        userList.add(0, TransactionUser(name = "for adding"))
+        userList.add(0, TransactionCategory(name = "for adding"))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -43,8 +43,8 @@ class TransactionUserAdapter(
         }
     }
 
-    fun updateList(list: ArrayList<TransactionUser>) {
-        list.add(0, TransactionUser(name = "for adding"))
+    fun updateList(list: ArrayList<TransactionCategory>) {
+        list.add(0, TransactionCategory(name = "for adding"))
         this.userList = list
         notifyDataSetChanged()
     }
@@ -59,7 +59,7 @@ class TransactionUserAdapter(
 
     inner class TransactionUserViewHolder(val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(transactionUser: TransactionUser) {
+        fun bind(transactionUser: TransactionCategory) {
             binding.tvName.text = transactionUser.name
             binding.tvName.isSelected = true
             transactionUser.uri?.let {

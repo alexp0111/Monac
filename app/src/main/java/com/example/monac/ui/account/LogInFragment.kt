@@ -10,6 +10,8 @@ import com.example.monac.R
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentLogInBinding
 import com.example.monac.ui.main.HomeFragment
+import com.example.monac.util.setUpLogInType
+import com.example.monac.util.setUpUser
 import com.google.android.material.snackbar.Snackbar
 
 class LogInFragment : Fragment(R.layout.fragment_log_in) {
@@ -43,7 +45,6 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
         binding.btnLogIn.setOnClickListener {
             if (!binding.etPassword.text.isNullOrEmpty()) {
                 if (binding.etPassword.text.toString() == user.password) {
-                    // save in sharedpref
 
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.container, HomeFragment()).commit()

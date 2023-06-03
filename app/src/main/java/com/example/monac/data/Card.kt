@@ -4,8 +4,8 @@ import android.graphics.Color
 import com.example.monac.util.PaymentInstruments
 
 data class Card(
-    val id: String = "-1",
-    val userID: String = "",
+    val id: Long? = null,
+    val userID: Long? = null,
     val name: String = "",
     val value: Double = 0.0,
     val marker: String = "$",

@@ -1,6 +1,5 @@
 package com.example.monac.ui.account
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -14,6 +13,9 @@ import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentNewAccBinding
 import com.example.monac.ui.main.HomeFragment
 import com.example.monac.util.UserType
+import com.example.monac.util.clearSP
+import com.example.monac.util.setUpLogInType
+import com.example.monac.util.setUpUser
 import com.example.monac.view_model.UserViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,16 +30,17 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
     private var selectedUri = Uri.EMPTY
     private var type = UserType.STANDART
 
-    private val selectImageIntent = registerForActivityResult(ActivityResultContracts.OpenDocument())
-    { uri ->
-        selectedUri = uri
-        Toast.makeText(requireContext(), uri.toString(), Toast.LENGTH_SHORT).show()
-        fragmentNewAccBinding?.ivAvatar?.let {
-            Glide.with(requireContext())
-                .load(uri)
-                .into(it)
+    private val selectImageIntent =
+        registerForActivityResult(ActivityResultContracts.OpenDocument())
+        { uri ->
+            selectedUri = uri
+            Toast.makeText(requireContext(), uri.toString(), Toast.LENGTH_SHORT).show()
+            fragmentNewAccBinding?.ivAvatar?.let {
+                Glide.with(requireContext())
+                    .load(uri)
+                    .into(it)
+            }
         }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,14 +54,13 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
 
         binding.btnLogIn.setOnClickListener {
             binding.apply {
-                if (validation(this)) userViewModel.registerNewAccount(
-                    User(
-                        name = etName.text.toString(),
-                        password = etPassword.text.toString(),
-                        imageUri = selectedUri.toString(),
-                        type = type
-                    )
-                ) { isSuccess ->
+                val user = User(
+                    name = etName.text.toString(),
+                    password = etPassword.text.toString(),
+                    imageUri = selectedUri.toString(),
+                    type = type
+                )
+                if (validation(this)) userViewModel.registerNewAccount(user) { isSuccess ->
                     if (isSuccess) {
                         Snackbar.make(
                             requireView(),
@@ -66,7 +68,9 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
                             Snackbar.LENGTH_LONG
                         ).show()
 
-                        // save current id in sharedpref
+                        clearSP(requireActivity())
+                        setUpUser(requireActivity(), user)
+                        setUpLogInType(requireActivity(), true)
 
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.container, HomeFragment()).commit()

@@ -4,8 +4,8 @@ import android.content.Context
 import android.provider.ContactsContract
 import kotlin.math.absoluteValue
 
-fun getActualContacts(context: Context): ArrayList<TransactionUser>? {
-    val list = hashSetOf<TransactionUser>()
+fun getActualContacts(context: Context): ArrayList<TransactionCategory>? {
+    val list = hashSetOf<TransactionCategory>()
     val contacts = context.contentResolver.query(
         ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
         null,
@@ -23,7 +23,7 @@ fun getActualContacts(context: Context): ArrayList<TransactionUser>? {
         val uri =
             contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI).absoluteValue)
 
-        list.add(TransactionUser(name = name, phone = phone, uri = uri))
+        list.add(TransactionCategory(name = name, phone = phone, uri = uri))
     }
     contacts.close()
 

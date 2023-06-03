@@ -4,11 +4,12 @@ import com.example.monac.util.PaymentType
 import java.time.LocalDateTime
 
 data class PaymentTransaction(
-    val transactionID: String = "",
+    val id: Long? = null,
+    val userID:  Long? = null,
     val value: Double = 0.0,
-    val cardID: String = "",
+    val cardID:  Long? = null,
     val type: PaymentType = PaymentType.CATEGORY,
-    val typeID: String = "", // category ID
+    val typeID:  Long? = null, // category ID
     val date: LocalDateTime = LocalDateTime.now(),
     val comments: String = ""
 )

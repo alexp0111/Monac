@@ -4,12 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.monac.data.PaymentTransaction
-import com.example.monac.data.TransactionUser
 import com.example.monac.databinding.ItemTransactionBinding
-import com.example.monac.databinding.ItemUserAddBinding
-import com.example.monac.databinding.ItemUserBinding
 
 class TransactionAdapter(
     val context: Context,

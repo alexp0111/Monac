@@ -13,7 +13,11 @@ import com.example.monac.R
 import com.example.monac.adapters.UserAdapter
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentStartBinding
+import com.example.monac.ui.main.HomeFragment
 import com.example.monac.util.UiState
+import com.example.monac.util.getCurrentUser
+import com.example.monac.util.getLogInType
+import com.example.monac.util.isSPClear
 import com.example.monac.view_model.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,6 +47,24 @@ class StartFragment : Fragment(R.layout.fragment_start) {
                     .replace(R.id.container, NewAccFragment()).commit()
             }
         )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (!isSPClear(requireActivity())) {
+            if (!getLogInType(requireActivity())) {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, HomeFragment()).commit()
+            } else {
+                val fragment = LogInFragment()
+                val bundle = Bundle()
+                bundle.putParcelable("user", getCurrentUser(requireActivity()))
+                fragment.arguments = bundle
+
+                parentFragmentManager.beginTransaction().addToBackStack(null)
+                    .replace(R.id.container, fragment).commit()
+            }
+        }
     }
 
     override fun onStart() {

@@ -19,7 +19,7 @@ import com.example.monac.adapters.TransactionAdapter
 import com.example.monac.adapters.TransactionUserAdapter
 import com.example.monac.data.Card
 import com.example.monac.data.PaymentTransaction
-import com.example.monac.data.TransactionUser
+import com.example.monac.data.TransactionCategory
 import com.example.monac.data.getActualContacts
 import com.example.monac.databinding.FragmentHomeBinding
 import com.example.monac.ui.SettingsFragment
@@ -149,7 +149,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun initUserRecycler(
         binding: FragmentHomeBinding,
-        list: List<TransactionUser>
+        list: List<TransactionCategory>
     ) {
         val manager = LinearLayoutManager(context)
         manager.orientation = LinearLayoutManager.HORIZONTAL
