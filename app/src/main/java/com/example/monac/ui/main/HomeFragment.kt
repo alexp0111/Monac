@@ -145,6 +145,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onStart() {
         super.onStart()
+        // cardViewModel.deleteAllCardsForUser(getCurrentUser(requireActivity()).id ?: -1)
         cardViewModel.getAllCardsForUser(getCurrentUser(requireActivity()).id ?: -1)
     }
 

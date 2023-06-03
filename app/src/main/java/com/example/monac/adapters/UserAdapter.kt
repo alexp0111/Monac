@@ -20,11 +20,6 @@ class UserAdapter(
 
     private var userList: ArrayList<User> = arrayListOf()
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        userList.add(0, User(name = "for adding"))
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == 0) {
             val view =
