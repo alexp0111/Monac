@@ -23,10 +23,10 @@ import com.example.monac.R
 import com.example.monac.adapters.CardAdapter
 import com.example.monac.adapters.TransactionAdapter
 import com.example.monac.adapters.TransactionUserAdapter
-import com.example.monac.data.PaymentTransaction
 import com.example.monac.data.TransactionCategory
 import com.example.monac.data.card.Card
 import com.example.monac.data.getActualContacts
+import com.example.monac.data.transaction.PaymentTransaction
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentHomeBinding
 import com.example.monac.ui.SettingsFragment
@@ -35,6 +35,7 @@ import com.example.monac.ui.main.mods.NewTransactionTypeFragment
 import com.example.monac.util.UiState
 import com.example.monac.util.getCurrentUser
 import com.example.monac.view_model.CardViewModel
+import com.example.monac.view_model.TransactionViewModel
 import com.example.monac.view_model.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -49,8 +50,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val userViewModel: UserViewModel by viewModels()
     private val cardViewModel: CardViewModel by viewModels()
+    private val transactionViewModel: TransactionViewModel by viewModels()
 
     private var cardList = arrayListOf<Card>()
+    private var transactionListForCard = arrayListOf<PaymentTransaction>()
 
     private val cardAdapter by lazy {
         CardAdapter(requireContext(),
@@ -139,24 +142,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         //  4. Get list of users from DB & display it
 
         // RecentTransactionsAdapter
-        initCardPager(
-            binding,
-            listOf(
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction(),
-                PaymentTransaction()
-            )
-        )
+        initTransactionsRecycler(binding)
     }
 
     override fun onStart() {
@@ -172,6 +158,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     if (it is UiState.Success && it.data != null) {
                         cardList = ArrayList(it.data)
                         cardAdapter.updateList(cardList)
+
+                        // Get transactions for card
+                        if (currentUser.id != null && cardList.isNotEmpty() && cardList[0].id != null) {
+                            transactionViewModel.getAllTransactionForUserAtCard(
+                                currentUser.id!!,
+                                cardList[0].id!!
+                            )
+                        }
+                    }
+                    if (it is UiState.Failure) {
+                        Toast.makeText(
+                            requireContext(),
+                            "sww",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                transactionViewModel.allTransactionForUserAtCard.collect {
+                    if (it is UiState.Success && it.data != null) {
+                        transactionListForCard = ArrayList(it.data)
+                        transactionrAdapter.updateList(transactionListForCard)
                     }
                     if (it is UiState.Failure) {
                         Toast.makeText(
@@ -185,16 +197,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun initCardPager(
-        binding: FragmentHomeBinding,
-        list: List<PaymentTransaction>
+    private fun initTransactionsRecycler(
+        binding: FragmentHomeBinding
     ) {
         val manager = LinearLayoutManager(context)
         manager.orientation = LinearLayoutManager.VERTICAL
         binding.rvRecent.layoutManager = manager
         binding.rvRecent.adapter = transactionrAdapter
-
-        transactionrAdapter.updateList(ArrayList(list))
     }
 
     private fun initUserRecycler(

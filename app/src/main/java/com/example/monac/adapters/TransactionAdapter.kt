@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.monac.data.PaymentTransaction
+import com.example.monac.data.transaction.PaymentTransaction
 import com.example.monac.databinding.ItemTransactionBinding
 
 class TransactionAdapter(
@@ -44,8 +44,8 @@ class TransactionAdapter(
         fun bind(transaction: PaymentTransaction) {
             binding.tvName.text = "Подписка на яндекс музыку"
             // set uri
-            binding.tvDate.text = transaction.date.dayOfMonth.toString() + " " + transaction.date.month.name
-            binding.tvTime.text = transaction.date.hour.toString() + ":" + transaction.date.minute.toString()
+            binding.tvDate.text = transaction.date
+            // binding.tvTime.text = transaction.date.hour.toString() + ":" + transaction.date.minute.toString()
             binding.tvValue.text = transaction.value.toString()
         }
     }
