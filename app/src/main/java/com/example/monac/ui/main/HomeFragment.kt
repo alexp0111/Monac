@@ -118,7 +118,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         binding.fab.setOnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.container, AddTranscationFragment())
+                .replace(R.id.container, AddTransactionFragment())
                 .addToBackStack(null)
                 .commit()
         }

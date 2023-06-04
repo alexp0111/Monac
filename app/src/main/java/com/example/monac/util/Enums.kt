@@ -11,3 +11,7 @@ enum class PaymentType {
 enum class UserType {
     STANDART, CHILD
 }
+
+enum class TransactionType {
+    EARNINGS, EXPENSES
+}
