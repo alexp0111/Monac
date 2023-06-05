@@ -13,6 +13,10 @@ import com.example.monac.databinding.FragmentNewTransactionTypeBinding
 class NewTransactionTypeFragment : Fragment(R.layout.fragment_new_transaction_type) {
     private var fragmentNewTransactionTypeBinding: FragmentNewTransactionTypeBinding? = null
 
+    private var currentColor: Int = Color.WHITE
+
+    //TODO:::::
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,8 +37,8 @@ class NewTransactionTypeFragment : Fragment(R.layout.fragment_new_transaction_ty
                         val r = Color.red(pixels)
                         val g = Color.green(pixels)
                         val b = Color.blue(pixels)
-                        val hex = "#" + Integer.toHexString(pixels)
-                        binding.tvHeader.setTextColor(Color.rgb(r, g, b))
+                        currentColor = Color.rgb(r, g, b)
+                        binding.tvHeader.setTextColor(currentColor)
                     } catch (e: Exception) {
                         Log.d("FNCA", "out of pic")
                     }

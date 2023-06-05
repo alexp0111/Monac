@@ -2,6 +2,7 @@ package com.example.monac.data
 
 import android.content.Context
 import android.provider.ContactsContract
+import com.example.monac.data.category.TransactionCategory
 import kotlin.math.absoluteValue
 
 fun getActualContacts(context: Context): ArrayList<TransactionCategory>? {

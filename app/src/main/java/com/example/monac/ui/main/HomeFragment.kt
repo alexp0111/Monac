@@ -24,7 +24,7 @@ import com.example.monac.R
 import com.example.monac.adapters.CardAdapter
 import com.example.monac.adapters.TransactionAdapter
 import com.example.monac.adapters.TransactionUserAdapter
-import com.example.monac.data.TransactionCategory
+import com.example.monac.data.category.TransactionCategory
 import com.example.monac.data.card.Card
 import com.example.monac.data.getActualContacts
 import com.example.monac.data.transaction.PaymentTransaction

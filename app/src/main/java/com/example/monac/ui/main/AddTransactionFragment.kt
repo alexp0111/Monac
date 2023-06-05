@@ -10,24 +10,30 @@ import android.view.View
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.monac.R
 import com.example.monac.adapters.CardAdapter
+import com.example.monac.adapters.CategoryAdapter
 import com.example.monac.data.card.Card
+import com.example.monac.data.category.TransactionCategory
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentAddTransactionBinding
 import com.example.monac.ui.main.mods.NewCardTypeFragment
+import com.example.monac.ui.main.mods.NewCategoryTypeFragment
 import com.example.monac.util.TransactionType
 import com.example.monac.util.UiState
 import com.example.monac.util.getCurrentUser
 import com.example.monac.view_model.CardViewModel
+import com.example.monac.view_model.CategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
@@ -45,8 +51,10 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
     private var type = TransactionType.EXPENSES
 
     private val cardViewModel: CardViewModel by viewModels()
+    private val categoryViewModel: CategoryViewModel by viewModels()
 
     private var cardList = arrayListOf<Card>()
+    private var categoryList = arrayListOf<TransactionCategory>()
 
     private val cardAdapter by lazy {
         CardAdapter(requireContext(),
@@ -55,6 +63,15 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
                 parentFragmentManager.beginTransaction().addToBackStack(null)
                     .replace(R.id.container, NewCardTypeFragment()).commit()
             }
+        )
+    }
+
+    private val categoryAdapter by lazy {
+        CategoryAdapter(
+            requireContext(),
+            onItemClicked = { _, category ->
+                fragmentAddTransactionBinding?.etCategory?.setText(category.name)
+            },
         )
     }
 
@@ -67,7 +84,6 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         super.onViewCreated(view, savedInstanceState)
 
         // TODO: Working with categories: search
-        // TODO: Picking date & time
         // TODO: Set marker to value based on card marker
 
         val binding = FragmentAddTransactionBinding.bind(view)
@@ -85,6 +101,9 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
 
         // Card Adapter
         initCardPager(binding)
+
+        // Category guess adapter
+        initCategoryAdapter(binding)
 
         // picker
         binding.apply {
@@ -120,6 +139,30 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
             }
         }
 
+        // category search
+        binding.etCategory.addTextChangedListener {
+            currentUser.id?.let { userID ->
+                categoryViewModel.guessCategoriesForUser(
+                    userID,
+                    it.toString()
+                )
+            }
+        }
+
+        // category adding
+        binding.ivCategory.setOnClickListener {
+            val fragment = NewCategoryTypeFragment()
+
+            if (!binding.etCategory.text.isNullOrEmpty()) {
+                val bundle = Bundle()
+                bundle.putString("name", binding.etCategory.text.toString())
+                fragment.arguments = bundle
+            }
+
+            parentFragmentManager.beginTransaction().addToBackStack(null)
+                .replace(R.id.container, fragment).commit()
+        }
+
         // time picker
         binding.tvTime.setOnClickListener {
             TimePickerDialog(
@@ -140,6 +183,13 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
             ).show()
         }
+    }
+
+    private fun initCategoryAdapter(binding: FragmentAddTransactionBinding) {
+        val manager = LinearLayoutManager(context)
+        manager.orientation = LinearLayoutManager.HORIZONTAL
+        binding.rvCategories.layoutManager = manager
+        binding.rvCategories.adapter = categoryAdapter
     }
 
     override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
@@ -180,6 +230,24 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
                     if (it is UiState.Success && it.data != null) {
                         cardList = ArrayList(it.data)
                         cardAdapter.updateList(cardList)
+                    }
+                    if (it is UiState.Failure) {
+                        Toast.makeText(
+                            requireContext(),
+                            "sww",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                categoryViewModel.guessedCategoriesForUser.collect {
+                    if (it is UiState.Success && it.data != null) {
+                        categoryList = ArrayList(it.data)
+                        categoryAdapter.updateList(categoryList)
                     }
                     if (it is UiState.Failure) {
                         Toast.makeText(

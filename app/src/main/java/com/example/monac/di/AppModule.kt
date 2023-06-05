@@ -3,6 +3,7 @@ package com.example.monac.di
 import android.app.Application
 import androidx.room.Room
 import com.example.monac.data.card.CardDatabase
+import com.example.monac.data.category.CategoryDatabase
 import com.example.monac.data.transaction.TransactionDatabase
 import com.example.monac.data.user.UserDatabase
 import dagger.Module
@@ -32,6 +33,13 @@ object AppModule {
     @Singleton
     fun provideTransactionDatabase(app: Application): TransactionDatabase =
         Room.databaseBuilder(app, TransactionDatabase::class.java, "transactions_database")
+            .fallbackToDestructiveMigration()
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideCategoryDatabase(app: Application): CategoryDatabase =
+        Room.databaseBuilder(app, CategoryDatabase::class.java, "categories_database")
             .fallbackToDestructiveMigration()
             .build()
 }
