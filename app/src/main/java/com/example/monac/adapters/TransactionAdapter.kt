@@ -4,8 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.monac.data.card.Card
+import com.example.monac.data.category.TransactionCategory
 import com.example.monac.data.transaction.PaymentTransaction
 import com.example.monac.databinding.ItemTransactionBinding
+import com.example.monac.util.PaymentType
+import com.example.monac.util.TransactionType
 
 class TransactionAdapter(
     val context: Context,
@@ -13,6 +18,8 @@ class TransactionAdapter(
     RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
     private var transactionList: ArrayList<PaymentTransaction> = arrayListOf()
+    private var categoryList: ArrayList<TransactionCategory> = arrayListOf()
+    private var card = Card()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
@@ -26,8 +33,10 @@ class TransactionAdapter(
         holder.bind(item)
     }
 
-    fun updateList(list: ArrayList<PaymentTransaction>) {
+    fun updateList(list: ArrayList<PaymentTransaction>, catList: ArrayList<TransactionCategory>, card: Card) {
         this.transactionList = list
+        this.categoryList = catList
+        this.card = card
         notifyDataSetChanged()
     }
 
@@ -42,11 +51,30 @@ class TransactionAdapter(
     inner class TransactionViewHolder(val binding: ItemTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(transaction: PaymentTransaction) {
-            binding.tvName.text = "Подписка на яндекс музыку"
-            // set uri
+            var category = TransactionCategory()
+            categoryList.forEach { if (it.id == transaction.typeID) category = it }
+
+            binding.tvName.text = category.name
+            if (category.type == PaymentType.CATEGORY) {
+                category.color?.let { binding.cvAvatar.setCardBackgroundColor(it) }
+            } else {
+                Glide.with(context)
+                    .load(category.uri)
+                    .into(binding.ivAvatar)
+            }
+
             binding.tvDate.text = transaction.date
-            // binding.tvTime.text = transaction.date.hour.toString() + ":" + transaction.date.minute.toString()
-            binding.tvValue.text = transaction.value.toString()
+            binding.tvTime.text = transaction.time
+
+            if (category.transactionType == TransactionType.EARNINGS) {
+                binding.tvValue.text = transaction.value.toString()
+            } else {
+                binding.tvValue.text = buildString {
+                    append("-")
+                    append(transaction.value.toString())
+                }
+            }
+            binding.tvValue.append(" ${card.marker}")
         }
     }
 }

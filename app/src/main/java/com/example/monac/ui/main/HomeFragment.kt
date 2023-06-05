@@ -36,6 +36,7 @@ import com.example.monac.ui.main.mods.NewTransactionTypeFragment
 import com.example.monac.util.UiState
 import com.example.monac.util.getCurrentUser
 import com.example.monac.view_model.CardViewModel
+import com.example.monac.view_model.CategoryViewModel
 import com.example.monac.view_model.TransactionViewModel
 import com.example.monac.view_model.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,6 +53,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val userViewModel: UserViewModel by viewModels()
     private val cardViewModel: CardViewModel by viewModels()
+    private val categoryViewModel: CategoryViewModel by viewModels()
     private val transactionViewModel: TransactionViewModel by viewModels()
 
     private var cardList = arrayListOf<Card>()
@@ -185,7 +187,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 transactionViewModel.allTransactionForUserAtCard.collect {
                     if (it is UiState.Success && it.data != null) {
                         transactionListForCard = ArrayList(it.data)
-                        transactionrAdapter.updateList(transactionListForCard)
+                        currentUser.id?.let { it1 -> categoryViewModel.getAllCategoriesForUser(it1) }
+                    }
+                    if (it is UiState.Failure) {
+                        Toast.makeText(
+                            requireContext(),
+                            "sww",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                categoryViewModel.allCategoriesForUser.collect {
+                    if (it is UiState.Success && it.data != null) {
+                        val categories = ArrayList(it.data)
+                        transactionrAdapter.updateList(transactionListForCard, categories, cardList[currentCardIndex])
                     }
                     if (it is UiState.Failure) {
                         Toast.makeText(

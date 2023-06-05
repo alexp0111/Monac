@@ -28,7 +28,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/avatar"
                 android:contentDescription="avatar for category" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -47,7 +46,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_bold"
-                android:text="Подписка на яндекс музыку"
                 android:textColor="@color/main_text_color"
                 app:layout_constraintBottom_toTopOf="@id/tv_date"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +57,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_bold"
-                android:text="-4.6$"
                 android:textColor="@color/main_text_color"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_name"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +67,6 @@
                 style="@style/TextSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="14 апр."
                 android:textColor="@color/acc_text_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +77,6 @@
                 style="@style/TextSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="16:00"
                 android:textColor="@color/acc_text_color"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_date"
                 app:layout_constraintEnd_toEndOf="parent"

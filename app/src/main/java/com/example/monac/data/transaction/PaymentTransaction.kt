@@ -12,8 +12,8 @@ data class PaymentTransaction(
     val userID: Long? = null,
     val value: Double = 0.0,
     val cardID: Long? = null,
-    val type: PaymentType = PaymentType.CATEGORY,
     val typeID: Long? = null, // category ID
     val date: String = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME),
+    val time: String = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME),
     val comments: String = ""
 )

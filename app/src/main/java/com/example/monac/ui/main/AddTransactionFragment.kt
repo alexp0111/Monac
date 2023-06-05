@@ -25,6 +25,7 @@ import com.example.monac.adapters.CardAdapter
 import com.example.monac.adapters.CategoryAdapter
 import com.example.monac.data.card.Card
 import com.example.monac.data.category.TransactionCategory
+import com.example.monac.data.transaction.PaymentTransaction
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentAddTransactionBinding
 import com.example.monac.ui.main.mods.NewCardTypeFragment
@@ -34,6 +35,8 @@ import com.example.monac.util.UiState
 import com.example.monac.util.getCurrentUser
 import com.example.monac.view_model.CardViewModel
 import com.example.monac.view_model.CategoryViewModel
+import com.example.monac.view_model.TransactionViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
@@ -44,13 +47,18 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
     TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     private var fragmentAddTransactionBinding: FragmentAddTransactionBinding? = null
 
+    // TODO: Set type (earn\expanse) based on category
+
     private var currentUser = User()
     private var currentCardIndex = 0
     private var currentTime = "00:00"
     private var currentDate = "00.00.0000"
+    private var currentMarker = "$"
     private var type = TransactionType.EXPENSES
+    private var currentCategory = TransactionCategory()
 
     private val cardViewModel: CardViewModel by viewModels()
+    private val transactionViewModel: TransactionViewModel by viewModels()
     private val categoryViewModel: CategoryViewModel by viewModels()
 
     private var cardList = arrayListOf<Card>()
@@ -71,6 +79,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
             requireContext(),
             onItemClicked = { _, category ->
                 fragmentAddTransactionBinding?.etCategory?.setText(category.name)
+                currentCategory = category
             },
         )
     }
@@ -92,8 +101,10 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         observers(binding)
 
         // Set up tume & date
-        binding.tvTime.text = SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
-        binding.tvDate.text = SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().time)
+        currentTime = SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
+        currentDate = SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().time)
+        binding.tvTime.text = currentTime
+        binding.tvDate.text = currentDate
 
         binding.ivBack.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -139,6 +150,9 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
             }
         }
 
+        // summ
+        binding.tvSum.setText("Сумма ($)")
+
         // category search
         binding.etCategory.addTextChangedListener {
             currentUser.id?.let { userID ->
@@ -182,6 +196,47 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
             ).show()
+        }
+
+        binding.fab.setOnClickListener {
+            if (validation(binding)) {
+                val transaction = PaymentTransaction(
+                    userID = currentUser.id,
+                    value = binding.etSum.text.toString().toDouble(),
+                    cardID = cardList[currentCardIndex].id,
+                    typeID = currentCategory.id,
+                    date = currentDate,
+                    time = currentTime,
+                    comments = binding.etComments.text.toString()
+                )
+                transactionViewModel.updateTransaction(transaction) { isSuccess ->
+                    if (isSuccess) {
+                        Snackbar.make(
+                            requireView(),
+                            "операция добавлена",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+
+                        parentFragmentManager.popBackStack()
+                    } else Snackbar.make(
+                        requireView(),
+                        "Не удалось добавить операцию",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            } else {
+                Snackbar.make(
+                    requireView(),
+                    "Убедитесь, что поля заполнены корректно",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun validation(binding: FragmentAddTransactionBinding): Boolean {
+        binding.apply {
+            return !etSum.text.isNullOrEmpty() && currentCategory.id != null
         }
     }
 
@@ -229,6 +284,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
                 cardViewModel.allCardsForUser.collect {
                     if (it is UiState.Success && it.data != null) {
                         cardList = ArrayList(it.data)
+                        binding.tvSum.text = "Сумма (${cardList[0].marker})"
                         cardAdapter.updateList(cardList)
                     }
                     if (it is UiState.Failure) {
@@ -268,6 +324,8 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 currentCardIndex = position
+                binding.tvSum.text = "Сумма (${cardList[position].marker})"
+                currentMarker = cardList[position].marker
             }
         })
 

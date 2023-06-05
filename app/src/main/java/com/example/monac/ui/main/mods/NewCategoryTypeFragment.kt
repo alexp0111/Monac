@@ -92,6 +92,7 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
                         uri = null,
                         color = currentColor,
                         type = PaymentType.CATEGORY,
+                        transactionType = type,
                         comments = binding.etComments.text.toString()
                     )
                     categoryViewModel.updateCategory(newCategory) {isSuccess ->
