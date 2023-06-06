@@ -65,7 +65,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     .replace(R.id.container, InfoFragment()).commit()
             },
             onLongItemClicked = { pos, item ->
-                Toast.makeText(requireContext(), "deleting?", Toast.LENGTH_SHORT).show()
+                val fragment = NewCardTypeFragment()
+
+                val bundle = Bundle()
+                bundle.putParcelable("card", item)
+                fragment.arguments = bundle
+
+                parentFragmentManager.beginTransaction().addToBackStack(null)
+                    .replace(R.id.container, fragment).commit()
                 true
             },
             onItemAddClicked = {
