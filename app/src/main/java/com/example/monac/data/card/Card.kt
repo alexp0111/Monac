@@ -10,7 +10,7 @@ data class Card(
     @PrimaryKey(autoGenerate = true) val id: Long? = null,
     val userID: Long? = null,
     val name: String = "",
-    val value: Double = 0.0,
+    var value: Double = 0.0,
     val marker: String = "$",
     val number: String = "0000",
     val comments: String = "",

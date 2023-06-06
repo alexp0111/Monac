@@ -225,6 +225,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     if (it is UiState.Success && it.data != null) {
                         transactionListForCard = ArrayList(it.data)
                         currentUser.id?.let { it1 -> categoryViewModel.getAllCategoriesForUser(it1) }
+                        cardAdapter.setUpVaue(transactionListForCard, currentCardIndex)
                     }
                     if (it is UiState.Failure) {
                         Toast.makeText(

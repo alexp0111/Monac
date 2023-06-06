@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity() {
         *  [3] Deletion of transactions
         *  4. All mechanic for info fragment
         *  5. Role model (limit logic)
-        *  6. Sync card total with transactions
-        *  (7) Add type field to transactions in user
+        *  [6] Sync card total with transactions
+        *  (--7--) Add type field to transactions in user
         *  8. Maybe info fragment for each transaction (show comments & delete button)
         * */
     }

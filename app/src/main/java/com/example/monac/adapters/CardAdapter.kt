@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.monac.R
 import com.example.monac.data.card.Card
+import com.example.monac.data.category.TransactionCategory
+import com.example.monac.data.transaction.PaymentTransaction
 import com.example.monac.databinding.ItemCardAddBinding
 import com.example.monac.databinding.ItemCardBinding
 import com.example.monac.util.PaymentInstruments
+import com.example.monac.util.TransactionType
 
 class CardAdapter(
     private val context: Context,
@@ -20,6 +23,7 @@ class CardAdapter(
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var cardList: ArrayList<Card> = arrayListOf()
+    private var currentValue: Double = 0.0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.d("ADAPTER1", cardList.size.toString())
@@ -57,13 +61,26 @@ class CardAdapter(
         return cardList.size
     }
 
+    fun setUpVaue(transactions: ArrayList<PaymentTransaction>, pos: Int) {
+        currentValue = 0.0
+        transactions.forEach {
+            if (it.type == TransactionType.EXPENSES) {
+                currentValue -= it.value
+            } else {
+                currentValue += it.value
+            }
+        }
+        notifyItemChanged(pos)
+    }
+
     inner class CardViewHolder(val binding: ItemCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(card: Card) {
             binding.tvName.text = card.name
+            // with transactions
             binding.tvValue.text = buildString {
+                append(currentValue)
                 append(card.marker)
-                append(card.value.toString())
             }
             binding.tvNumber.text = buildString {
                 append("**** **** **** ")
