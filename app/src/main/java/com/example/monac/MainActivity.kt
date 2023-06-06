@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
         /*
         * TODO:
-        *  1. Sync category & addTransaction type (+\-)
+        *  [1.] Sync category & addTransaction type (+\-)
         *  2. Transactions with users
         *  3. Deletion of transactions
         *  4. All mechanic for info fragment

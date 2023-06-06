@@ -41,9 +41,9 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
-    fun deleteAllCards() {
+    fun deleteAllTransactions() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAllCards()
+            repository.deleteAllTransactions()
         }
     }
 }

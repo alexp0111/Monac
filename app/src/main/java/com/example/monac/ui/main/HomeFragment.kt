@@ -57,6 +57,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val transactionViewModel: TransactionViewModel by viewModels()
 
     private var cardList = arrayListOf<Card>()
+    private var userList = arrayListOf<TransactionCategory>()
     private var transactionListForCard = arrayListOf<PaymentTransaction>()
 
     private val cardAdapter by lazy {
@@ -64,6 +65,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             onItemClicked = { pos, item ->
                 parentFragmentManager.beginTransaction().addToBackStack(null)
                     .replace(R.id.container, InfoFragment()).commit()
+            },
+            onLongItemClicked = { pos, item ->
+                Toast.makeText(requireContext(), "deleting?", Toast.LENGTH_SHORT).show()
+                true
             },
             onItemAddClicked = {
                 parentFragmentManager.beginTransaction().addToBackStack(null)
@@ -96,7 +101,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        checkPermission(Manifest.permission.READ_CONTACTS, 1)
         currentUser = getCurrentUser(requireActivity())
     }
 
@@ -134,16 +138,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         // Card Adapter
         initCardPager(binding)
 
-        //Transaction Adapter
-        if (checkPermission(Manifest.permission.READ_CONTACTS, 1)) {
-            val conts = getActualContacts(requireContext())
-            conts.let {
-                it?.forEach {
-                    Log.d(TAG, it.toString())
-                }
-                it?.let { list -> initUserRecycler(binding, list) }
-            }
-        }
+        //user list
+        initUserRecycler(binding)
 
         // TODO:
         //  1. Goto viewmodel
@@ -157,8 +153,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onStart() {
         super.onStart()
+        // transactionViewModel.deleteAllTransactions()
         // cardViewModel.deleteAllCardsForUser(getCurrentUser(requireActivity()).id ?: -1)
         cardViewModel.getAllCardsForUser(getCurrentUser(requireActivity()).id ?: -1)
+        categoryViewModel.getAllTransactionUsersForUser(getCurrentUser(requireActivity()).id ?: -1)
     }
 
     private fun observers(binding: FragmentHomeBinding) {
@@ -227,6 +225,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                categoryViewModel.allTransactionUsersForUser.collect {
+                    if (it is UiState.Success && it.data != null) {
+                        userList = ArrayList(it.data)
+                        transactionUserAdapter.updateList(ArrayList(userList.sortedWith(compareBy { it.name })))
+                    }
+                    if (it is UiState.Failure) {
+                        Toast.makeText(
+                            requireContext(),
+                            "sww",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
     }
 
     private fun initTransactionsRecycler(
@@ -239,15 +255,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun initUserRecycler(
-        binding: FragmentHomeBinding,
-        list: List<TransactionCategory>
+        binding: FragmentHomeBinding
     ) {
         val manager = LinearLayoutManager(context)
         manager.orientation = LinearLayoutManager.HORIZONTAL
         binding.rvTransactions.layoutManager = manager
         binding.rvTransactions.adapter = transactionUserAdapter
-
-        transactionUserAdapter.updateList(ArrayList(list.sortedWith(compareBy { it.name })))
     }
 
     private fun initCardPager(binding: FragmentHomeBinding) {
@@ -276,20 +289,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             page.scaleY = 0.85f + r * 0.15f
         }
         binding.vpCards.setPageTransformer(transformer)
-    }
-
-    private fun checkPermission(permission: String, requestCode: Int): Boolean {
-        return if (ContextCompat.checkSelfPermission(
-                requireActivity(),
-                permission
-            ) == PackageManager.PERMISSION_DENIED
-        ) {
-            // Requesting the permission
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(permission), requestCode)
-            false
-        } else {
-            true
-        }
     }
 
     override fun onDestroy() {

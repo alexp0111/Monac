@@ -43,7 +43,7 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
 
         // Args
         val name = arguments?.getString("name") ?: ""
-        type = if ((arguments?.getString("name")
+        type = if ((arguments?.getString("type")
                 ?: "") == "transaction"
         ) PaymentType.TRANSACTION else PaymentType.CATEGORY
 

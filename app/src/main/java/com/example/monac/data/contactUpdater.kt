@@ -4,9 +4,10 @@ import android.content.Context
 import android.graphics.Color
 import android.provider.ContactsContract
 import com.example.monac.data.category.TransactionCategory
+import com.example.monac.util.PaymentType
 import kotlin.math.absoluteValue
 
-fun getActualContacts(context: Context): ArrayList<TransactionCategory>? {
+fun getActualContacts(context: Context, userID: Long?): ArrayList<TransactionCategory>? {
     val list = hashSetOf<TransactionCategory>()
     val contacts = context.contentResolver.query(
         ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -22,10 +23,16 @@ fun getActualContacts(context: Context): ArrayList<TransactionCategory>? {
             contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME).absoluteValue)
         val phone =
             contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER).absoluteValue)
-        val uri =
-            contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI).absoluteValue)
 
-        list.add(TransactionCategory(name = name, phone = phone, color = Color.parseColor("#212121")))
+        list.add(
+            TransactionCategory(
+                userID = userID,
+                name = name,
+                phone = phone,
+                color = Color.parseColor("#212121"),
+                type = PaymentType.TRANSACTION
+            )
+        )
     }
     contacts.close()
 

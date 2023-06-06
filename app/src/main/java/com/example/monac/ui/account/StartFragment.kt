@@ -1,8 +1,14 @@
 package com.example.monac.ui.account
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -11,6 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monac.R
 import com.example.monac.adapters.UserAdapter
+import com.example.monac.data.getActualContacts
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentStartBinding
 import com.example.monac.ui.main.HomeFragment
@@ -18,6 +25,7 @@ import com.example.monac.util.UiState
 import com.example.monac.util.getCurrentUser
 import com.example.monac.util.getLogInType
 import com.example.monac.util.isSPClear
+import com.example.monac.view_model.CategoryViewModel
 import com.example.monac.view_model.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -49,8 +57,13 @@ class StartFragment : Fragment(R.layout.fragment_start) {
         )
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (!isSPClear(requireActivity())) {
             if (!getLogInType(requireActivity())) {
                 parentFragmentManager.beginTransaction()

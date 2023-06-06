@@ -25,12 +25,19 @@ class CategoryViewModel @Inject constructor(
     private val categoryChannel = Channel<Long>()
     private val categoryChannelFlow = categoryChannel.receiveAsFlow()
 
+    private val categoryUserChannel = Channel<Long>()
+    private val categoryUserChannelFlow = categoryUserChannel.receiveAsFlow()
+
     private val categoryGuessChannel = Channel<Pair<Long, String>>()
     private val categoryGuessChannelFlow = categoryGuessChannel.receiveAsFlow()
 
 
     val allCategoriesForUser = categoryChannelFlow.flatMapLatest { userID ->
         repository.getAllCategoriesForUser(userID)
+    }.stateIn(viewModelScope.plus(Dispatchers.IO), SharingStarted.Lazily, null)
+
+    val allTransactionUsersForUser = categoryUserChannelFlow.flatMapLatest { userID ->
+        repository.getAllTransactionUsersForUser(userID)
     }.stateIn(viewModelScope.plus(Dispatchers.IO), SharingStarted.Lazily, null)
 
     val guessedCategoriesForUser = categoryGuessChannelFlow.flatMapLatest { userIdAndGuessName ->
@@ -43,6 +50,12 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
+    fun getAllTransactionUsersForUser(userID: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            categoryUserChannel.send(userID)
+        }
+    }
+
     fun guessCategoriesForUser(userID: Long, name: String) {
         viewModelScope.launch(Dispatchers.IO) {
             categoryGuessChannel.send(Pair(userID, name))
@@ -52,6 +65,12 @@ class CategoryViewModel @Inject constructor(
     fun updateCategory(category: TransactionCategory, isSuccess: (Boolean) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             isSuccess.invoke(repository.insertCategory(category))
+        }
+    }
+
+    fun updateUsers(list: List<TransactionCategory>, isSuccess: (Boolean) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            isSuccess.invoke(repository.updateUserList(list))
         }
     }
 

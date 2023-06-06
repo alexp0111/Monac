@@ -23,5 +23,5 @@ class TransactionRepository @Inject constructor(
     suspend fun deleteAllCardsForUser(transaction: PaymentTransaction) =
         transactionsDao.deleteTransaction(transaction)
 
-    suspend fun deleteAllCards() = transactionsDao.deleteAllTransactions()
+    suspend fun deleteAllTransactions() = transactionsDao.deleteAllTransactions()
 }

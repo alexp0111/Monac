@@ -67,6 +67,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
     private val cardAdapter by lazy {
         CardAdapter(requireContext(),
             onItemClicked = { _, _ -> },
+            onLongItemClicked = { _, _ -> false},
             onItemAddClicked = {
                 parentFragmentManager.beginTransaction().addToBackStack(null)
                     .replace(R.id.container, NewCardTypeFragment()).commit()
@@ -208,6 +209,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
                     typeID = currentCategory.id,
                     date = currentDate,
                     time = currentTime,
+                    type = type,
                     comments = binding.etComments.text.toString()
                 )
                 transactionViewModel.updateTransaction(transaction) { isSuccess ->

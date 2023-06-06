@@ -14,6 +14,7 @@ import com.example.monac.util.PaymentInstruments
 class CardAdapter(
     private val context: Context,
     val onItemClicked: (Int, Card) -> Unit,
+    val onLongItemClicked: (Int, Card) -> Boolean,
     val onItemAddClicked: () -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -76,6 +77,7 @@ class CardAdapter(
             else binding.iv.setImageResource(R.drawable.mir_pay)
 
             binding.card.setOnClickListener { onItemClicked.invoke(absoluteAdapterPosition, card) }
+            binding.card.setOnLongClickListener { onLongItemClicked.invoke(absoluteAdapterPosition, card) }
         }
     }
 
