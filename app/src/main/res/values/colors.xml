@@ -15,6 +15,7 @@
     //
 
     <color name="main_text_color">@color/black</color>
+    <color name="category_back">@color/gray_900</color>
     <color name="acc_text_color">@color/gray_400</color>
     <color name="background_main">@color/white</color>
     <color name="background_card">@color/white</color>

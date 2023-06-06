@@ -1,9 +1,11 @@
 package com.example.monac.adapters
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.monac.R
 import com.example.monac.data.category.TransactionCategory
 import com.example.monac.databinding.ItemSearchCategoryResultBinding
 
@@ -44,7 +46,11 @@ class CategoryAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(category: TransactionCategory) {
             binding.tvName.text = category.name
-            category.color?.let { binding.cv.setCardBackgroundColor(it) }
+            if (category.color != null && category.color != -1) {
+                binding.cv.setCardBackgroundColor(category.color)
+            } else {
+                binding.cv.setCardBackgroundColor(ColorStateList.valueOf(context.getColor(R.color.category_back)))
+            }
             binding.cv.setOnClickListener {
                 onItemClicked.invoke(
                     absoluteAdapterPosition,

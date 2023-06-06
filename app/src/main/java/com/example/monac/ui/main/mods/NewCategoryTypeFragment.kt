@@ -3,6 +3,7 @@ package com.example.monac.ui.main.mods
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -26,6 +27,7 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
     private val categoryViewModel: CategoryViewModel by viewModels()
 
     private var currentUser = User()
+    private var currentCategory: TransactionCategory? = null
     private var currentColor: Int = Color.WHITE
     private var type = PaymentType.CATEGORY
 
@@ -47,6 +49,10 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
                 ?: "") == "transaction"
         ) PaymentType.TRANSACTION else PaymentType.CATEGORY
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            currentCategory = arguments?.getParcelable("category", TransactionCategory::class.java)
+        else currentCategory = arguments?.getParcelable("category")
+
         binding.apply {
             if (type == PaymentType.CATEGORY) {
                 tvHeader.text = "Новая категория"
@@ -56,10 +62,31 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
                 tvHeader.text = "Новый перевод"
                 tvPhone.visibility = View.VISIBLE
                 clPhone.visibility = View.VISIBLE
+
+                if (currentCategory != null) {
+                    tvHeader.text = currentCategory!!.name
+                    currentCategory!!.color.let {
+                        if (it != null) {
+                            tvHeader.setTextColor(it)
+                            currentColor = it
+                        }
+                    }
+                    currentCategory!!.name.let {
+                        etName.setText(it)
+                    }
+                    currentCategory!!.phone.let {
+                        if (it != null) {
+                            etPhone.setText(it)
+                        }
+                    }
+                    currentCategory!!.comments.let {
+                        etComments.setText(it)
+                    }
+                }
             }
         }
 
-        binding.etName.setText(name)
+        if (name.isNotEmpty()) binding.etName.setText(name)
 
         binding.ivBack.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -68,6 +95,7 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
         binding.fab.setOnClickListener {
             if (validation(binding)) {
                 val newCategory = TransactionCategory(
+                    id = if (currentCategory != null) currentCategory!!.id else  null,
                     userID = currentUser.id,
                     name = binding.etName.text.toString(),
                     phone = if (type == PaymentType.TRANSACTION) binding.etPhone.text.toString() else null,

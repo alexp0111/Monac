@@ -29,7 +29,6 @@ fun getActualContacts(context: Context, userID: Long?): ArrayList<TransactionCat
                 userID = userID,
                 name = name,
                 phone = phone,
-                color = Color.parseColor("#212121"),
                 type = PaymentType.TRANSACTION
             )
         )

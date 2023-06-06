@@ -82,6 +82,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             onItemClicked = { pos, item ->
                 // todo: new transaction to user
             },
+            onLongItemClicked = { pos, item ->
+                val fragment = NewCategoryTypeFragment()
+
+                val bundle = Bundle()
+                bundle.putString("type", "transaction")
+                bundle.putParcelable("category", item)
+                fragment.arguments = bundle
+
+                parentFragmentManager.beginTransaction().addToBackStack(null)
+                    .replace(R.id.container, fragment).commit()
+                true
+            },
             onItemAddClicked = {
                 val fragment = NewCategoryTypeFragment()
 

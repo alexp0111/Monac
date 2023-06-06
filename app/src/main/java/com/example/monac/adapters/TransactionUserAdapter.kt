@@ -1,10 +1,11 @@
 package com.example.monac.adapters
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.example.monac.R
 import com.example.monac.data.category.TransactionCategory
 import com.example.monac.databinding.ItemUserAddBinding
 import com.example.monac.databinding.ItemUserBinding
@@ -12,6 +13,7 @@ import com.example.monac.databinding.ItemUserBinding
 class TransactionUserAdapter(
     val context: Context,
     val onItemClicked: (Int, TransactionCategory) -> Unit,
+    val onLongItemClicked: (Int, TransactionCategory) -> Boolean,
     val onItemAddClicked: () -> Unit
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -62,17 +64,24 @@ class TransactionUserAdapter(
         fun bind(transactionUser: TransactionCategory) {
             binding.tvName.text = transactionUser.name
             binding.tvName.isSelected = true
-            transactionUser.color?.let { binding.cvAvatar.setCardBackgroundColor(it) }
+            if (transactionUser.color != null && transactionUser.color != -1) {
+                binding.cvAvatar.setCardBackgroundColor(transactionUser.color)
+            } else {
+                binding.cvAvatar.setCardBackgroundColor(ColorStateList.valueOf(context.getColor(R.color.white)))
+            }
 
             binding.ivAvatar.setOnClickListener {
                 onItemClicked.invoke(absoluteAdapterPosition, transactionUser)
+            }
+            binding.ivAvatar.setOnLongClickListener {
+                onLongItemClicked.invoke(absoluteAdapterPosition, transactionUser)
             }
         }
     }
 
     inner class TransactionUserAddViewHolder(val binding: ItemUserAddBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(){
+        fun bind() {
             binding.ivAvatar.setOnClickListener {
                 onItemAddClicked.invoke()
             }

@@ -16,6 +16,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="@dimen/half_basic_margin"
         android:gravity="center_vertical"
-        android:textColor="@color/main_text_color" />
+        android:textColor="@color/background_main" />
 
 </com.google.android.material.card.MaterialCardView>
