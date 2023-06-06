@@ -11,13 +11,11 @@ data class TransactionCategory(
     val userID: Long? = null,
     val name: String = "",
     val phone: String? = null,
-    val uri: String? = null,
     val color: Int? = null,
     val type: PaymentType = PaymentType.TRANSACTION,
-    val transactionType: TransactionType = TransactionType.EXPENSES,
     val comments: String = ""
 ) {
     override fun toString(): String {
-        return "TransactionCategory(id=$id, userID=$userID, name='$name', phone=$phone, uri=$uri, color=$color, type=$type, comments='$comments')"
+        return "TransactionCategory(id=$id, userID=$userID, name='$name', phone=$phone, color=$color, type=$type, comments='$comments')"
     }
 }

@@ -24,15 +24,15 @@ import com.example.monac.R
 import com.example.monac.adapters.CardAdapter
 import com.example.monac.adapters.TransactionAdapter
 import com.example.monac.adapters.TransactionUserAdapter
-import com.example.monac.data.category.TransactionCategory
 import com.example.monac.data.card.Card
+import com.example.monac.data.category.TransactionCategory
 import com.example.monac.data.getActualContacts
 import com.example.monac.data.transaction.PaymentTransaction
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentHomeBinding
 import com.example.monac.ui.SettingsFragment
 import com.example.monac.ui.main.mods.NewCardTypeFragment
-import com.example.monac.ui.main.mods.NewTransactionTypeFragment
+import com.example.monac.ui.main.mods.NewCategoryTypeFragment
 import com.example.monac.util.UiState
 import com.example.monac.util.getCurrentUser
 import com.example.monac.view_model.CardViewModel
@@ -78,8 +78,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 // todo: new transaction to user
             },
             onItemAddClicked = {
+                val fragment = NewCategoryTypeFragment()
+
+                val bundle = Bundle()
+                bundle.putString("type", "transaction")
+                fragment.arguments = bundle
+
                 parentFragmentManager.beginTransaction().addToBackStack(null)
-                    .replace(R.id.container, NewTransactionTypeFragment()).commit()
+                    .replace(R.id.container, fragment).commit()
             }
         )
     }
@@ -205,7 +211,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 categoryViewModel.allCategoriesForUser.collect {
                     if (it is UiState.Success && it.data != null) {
                         val categories = ArrayList(it.data)
-                        transactionrAdapter.updateList(transactionListForCard, categories, cardList[currentCardIndex])
+                        transactionrAdapter.updateList(
+                            transactionListForCard,
+                            categories,
+                            cardList[currentCardIndex]
+                        )
                     }
                     if (it is UiState.Failure) {
                         Toast.makeText(

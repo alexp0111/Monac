@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.monac.R
@@ -15,7 +14,6 @@ import com.example.monac.data.category.TransactionCategory
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentNewCategoryTypeBinding
 import com.example.monac.util.PaymentType
-import com.example.monac.util.TransactionType
 import com.example.monac.util.getCurrentUser
 import com.example.monac.view_model.CategoryViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -29,7 +27,7 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
 
     private var currentUser = User()
     private var currentColor: Int = Color.WHITE
-    private var type = TransactionType.EXPENSES
+    private var type = PaymentType.CATEGORY
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -45,80 +43,62 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
 
         // Args
         val name = arguments?.getString("name") ?: ""
+        type = if ((arguments?.getString("name")
+                ?: "") == "transaction"
+        ) PaymentType.TRANSACTION else PaymentType.CATEGORY
+
+        binding.apply {
+            if (type == PaymentType.CATEGORY) {
+                tvHeader.text = "Новая категория"
+                tvPhone.visibility = View.GONE
+                clPhone.visibility = View.GONE
+            } else {
+                tvHeader.text = "Новый перевод"
+                tvPhone.visibility = View.VISIBLE
+                clPhone.visibility = View.VISIBLE
+            }
+        }
+
         binding.etName.setText(name)
 
         binding.ivBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
-        binding.apply {
-            tvExpenses.setOnClickListener {
-                type = TransactionType.EXPENSES
-                tvExpenses.setTextColor(
-                    resources.getColor(
-                        R.color.picker_text_on,
-                        resources.newTheme()
-                    )
+        binding.fab.setOnClickListener {
+            if (validation(binding)) {
+                val newCategory = TransactionCategory(
+                    userID = currentUser.id,
+                    name = binding.etName.text.toString(),
+                    phone = if (type == PaymentType.TRANSACTION) binding.etPhone.text.toString() else null,
+                    color = currentColor,
+                    type = type,
+                    comments = binding.etComments.text.toString()
                 )
-                tvEarnings.setTextColor(
-                    resources.getColor(
-                        R.color.picker_text_off,
-                        resources.newTheme()
-                    )
-                )
-            }
-            tvEarnings.setOnClickListener {
-                type = TransactionType.EARNINGS
-                tvExpenses.setTextColor(
-                    resources.getColor(
-                        R.color.picker_text_off,
-                        resources.newTheme()
-                    )
-                )
-                tvEarnings.setTextColor(
-                    resources.getColor(
-                        R.color.picker_text_on,
-                        resources.newTheme()
-                    )
-                )
-            }
-
-            binding.fab.setOnClickListener {
-                if (validation(binding)) {
-                    val newCategory = TransactionCategory(
-                        userID = currentUser.id,
-                        name = binding.etName.text.toString(),
-                        phone = null,
-                        uri = null,
-                        color = currentColor,
-                        type = PaymentType.CATEGORY,
-                        transactionType = type,
-                        comments = binding.etComments.text.toString()
-                    )
-                    categoryViewModel.updateCategory(newCategory) {isSuccess ->
-                        if (isSuccess) {
-                            Snackbar.make(
-                                requireView(),
-                                "категория добавлена",
-                                Snackbar.LENGTH_LONG
-                            ).show()
-
-                            parentFragmentManager.popBackStack()
-                        } else Snackbar.make(
+                categoryViewModel.updateCategory(newCategory) { isSuccess ->
+                    if (isSuccess) {
+                        Snackbar.make(
                             requireView(),
-                            "Не удалось добавить категорию",
+                            "Успешно добавлено",
                             Snackbar.LENGTH_LONG
                         ).show()
-                    }
-                } else {
-                    Snackbar.make(
+
+                        parentFragmentManager.popBackStack()
+                    } else Snackbar.make(
                         requireView(),
-                        "Убедитесь, что поля заполнены корректно",
+                        "Не удалось добавить",
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
+            } else {
+                Snackbar.make(
+                    requireView(),
+                    "Убедитесь, что поля заполнены корректно",
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
         }
+
 
         binding.ivColorPicker.apply {
             setOnTouchListener { view, event ->
@@ -142,7 +122,11 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
 
     private fun validation(binding: FragmentNewCategoryTypeBinding): Boolean {
         binding.apply {
-            return !etName.text.isNullOrEmpty()
+            return !etName.text.isNullOrEmpty() && (
+                    (type == PaymentType.TRANSACTION
+                            && !binding.etPhone.text.isNullOrEmpty())
+                            || (type == PaymentType.CATEGORY)
+                    )
         }
     }
 

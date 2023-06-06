@@ -170,6 +170,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
             if (!binding.etCategory.text.isNullOrEmpty()) {
                 val bundle = Bundle()
                 bundle.putString("name", binding.etCategory.text.toString())
+                bundle.putString("type", "category")
                 fragment.arguments = bundle
             }
 
@@ -275,6 +276,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
 
     override fun onStart() {
         super.onStart()
+        fragmentAddTransactionBinding?.etCategory?.setText("")
         cardViewModel.getAllCardsForUser(currentUser.id ?: -1)
     }
 

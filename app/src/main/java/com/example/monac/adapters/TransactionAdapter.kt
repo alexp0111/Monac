@@ -2,6 +2,7 @@ package com.example.monac.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -55,26 +56,28 @@ class TransactionAdapter(
             categoryList.forEach { if (it.id == transaction.typeID) category = it }
 
             binding.tvName.text = category.name
+            category.color?.let { binding.cvAvatar.setCardBackgroundColor(it) }
             if (category.type == PaymentType.CATEGORY) {
-                category.color?.let { binding.cvAvatar.setCardBackgroundColor(it) }
+                binding.ivAvatar.visibility = View.GONE
             } else {
-                Glide.with(context)
-                    .load(category.uri)
-                    .into(binding.ivAvatar)
+                binding.ivAvatar.visibility = View.VISIBLE
             }
 
             binding.tvDate.text = transaction.date
             binding.tvTime.text = transaction.time
 
-            if (category.transactionType == TransactionType.EARNINGS) {
-                binding.tvValue.text = transaction.value.toString()
+            if (transaction.type == TransactionType.EARNINGS) {
+                binding.tvValue.text = buildString {
+                    append("+")
+                    append(transaction.value.toString())
+                }
             } else {
                 binding.tvValue.text = buildString {
                     append("-")
                     append(transaction.value.toString())
                 }
             }
-            binding.tvValue.append(" ${card.marker}")
+            binding.tvValue.append(card.marker)
         }
     }
 }

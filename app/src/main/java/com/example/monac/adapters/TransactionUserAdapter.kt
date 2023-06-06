@@ -62,11 +62,7 @@ class TransactionUserAdapter(
         fun bind(transactionUser: TransactionCategory) {
             binding.tvName.text = transactionUser.name
             binding.tvName.isSelected = true
-            transactionUser.uri?.let {
-                Glide.with(context)
-                    .load(it)
-                    .into(binding.ivAvatar)
-            }
+            transactionUser.color?.let { binding.cvAvatar.setCardBackgroundColor(it) }
 
             binding.ivAvatar.setOnClickListener {
                 onItemClicked.invoke(absoluteAdapterPosition, transactionUser)

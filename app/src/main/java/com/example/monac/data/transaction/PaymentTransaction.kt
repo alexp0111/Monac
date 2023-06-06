@@ -3,6 +3,7 @@ package com.example.monac.data.transaction
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.monac.util.PaymentType
+import com.example.monac.util.TransactionType
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -15,5 +16,6 @@ data class PaymentTransaction(
     val typeID: Long? = null, // category ID
     val date: String = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME),
     val time: String = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME),
+    val type: TransactionType = TransactionType.EXPENSES,
     val comments: String = ""
 )

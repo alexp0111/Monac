@@ -1,6 +1,7 @@
 package com.example.monac.data
 
 import android.content.Context
+import android.graphics.Color
 import android.provider.ContactsContract
 import com.example.monac.data.category.TransactionCategory
 import kotlin.math.absoluteValue
@@ -24,7 +25,7 @@ fun getActualContacts(context: Context): ArrayList<TransactionCategory>? {
         val uri =
             contacts.getString(contacts.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI).absoluteValue)
 
-        list.add(TransactionCategory(name = name, phone = phone, uri = uri))
+        list.add(TransactionCategory(name = name, phone = phone, color = Color.parseColor("#212121")))
     }
     contacts.close()
 

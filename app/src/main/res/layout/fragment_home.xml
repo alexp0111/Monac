@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="avatar for category"
                 android:scaleType="centerCrop"
-                android:src="@drawable/avatar" />
+                android:src="@drawable/sasuke" />
         </androidx.cardview.widget.CardView>
 
         <TextView

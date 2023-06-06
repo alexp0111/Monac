@@ -26,6 +26,7 @@
             <ImageView
                 android:id="@+id/iv_avatar"
                 android:layout_width="match_parent"
+                android:src="@drawable/avatar"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:contentDescription="avatar for category" />
