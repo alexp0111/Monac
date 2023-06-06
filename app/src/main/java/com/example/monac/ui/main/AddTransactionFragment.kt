@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.icu.text.SimpleDateFormat
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -67,7 +68,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
     private val cardAdapter by lazy {
         CardAdapter(requireContext(),
             onItemClicked = { _, _ -> },
-            onLongItemClicked = { _, _ -> false},
+            onLongItemClicked = { _, _ -> false },
             onItemAddClicked = {
                 parentFragmentManager.beginTransaction().addToBackStack(null)
                     .replace(R.id.container, NewCardTypeFragment()).commit()
@@ -79,6 +80,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         CategoryAdapter(
             requireContext(),
             onItemClicked = { _, category ->
+                Log.d("QWERTYUI", "1212")
                 fragmentAddTransactionBinding?.etCategory?.setText(category.name)
                 currentCategory = category
             },
@@ -93,13 +95,15 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO: Working with categories: search
-        // TODO: Set marker to value based on card marker
-
         val binding = FragmentAddTransactionBinding.bind(view)
         fragmentAddTransactionBinding = binding
 
         observers(binding)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            currentCategory = arguments?.getParcelable("category", TransactionCategory::class.java)
+                ?: TransactionCategory()
+        else currentCategory = arguments?.getParcelable("category") ?: TransactionCategory()
 
         // Set up tume & date
         currentTime = SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
@@ -279,6 +283,9 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
     override fun onStart() {
         super.onStart()
         fragmentAddTransactionBinding?.etCategory?.setText("")
+        if (currentCategory.id != null) fragmentAddTransactionBinding?.etCategory?.setText(
+            currentCategory.name
+        )
         cardViewModel.getAllCardsForUser(currentUser.id ?: -1)
     }
 

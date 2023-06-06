@@ -1,32 +1,29 @@
 package com.example.monac.ui.main
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.monac.R
 import com.example.monac.adapters.CardAdapter
+import com.example.monac.adapters.SwipeGesture
 import com.example.monac.adapters.TransactionAdapter
 import com.example.monac.adapters.TransactionUserAdapter
 import com.example.monac.data.card.Card
 import com.example.monac.data.category.TransactionCategory
-import com.example.monac.data.getActualContacts
 import com.example.monac.data.transaction.PaymentTransaction
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentHomeBinding
@@ -39,6 +36,7 @@ import com.example.monac.view_model.CardViewModel
 import com.example.monac.view_model.CategoryViewModel
 import com.example.monac.view_model.TransactionViewModel
 import com.example.monac.view_model.UserViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -80,7 +78,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val transactionUserAdapter by lazy {
         TransactionUserAdapter(requireContext(),
             onItemClicked = { pos, item ->
-                // todo: new transaction to user
+                val fragment = AddTransactionFragment()
+
+                val bundle = Bundle()
+                bundle.putParcelable("category", item)
+                fragment.arguments = bundle
+
+                parentFragmentManager.beginTransaction().addToBackStack(null)
+                    .replace(R.id.container, fragment).commit()
             },
             onLongItemClicked = { pos, item ->
                 val fragment = NewCategoryTypeFragment()
@@ -153,11 +158,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         //user list
         initUserRecycler(binding)
 
-        // TODO:
-        //  1. Goto viewmodel
-        //  2. Check for new contacts
-        //  3. If there are new contacts - add info to DB
-        //  4. Get list of users from DB & display it
+        val swipeGesture = object : SwipeGesture(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                if (direction == ItemTouchHelper.RIGHT) {
+                    val transaction =
+                        transactionListForCard[viewHolder.absoluteAdapterPosition]
+                    transactionViewModel.deleteTransaction(transaction)
+                    transactionrAdapter.deleteItem(viewHolder.absoluteAdapterPosition)
+
+                    Snackbar.make(requireView(), "Удалено из списка", Snackbar.LENGTH_LONG)
+                        .setAction("Восстановить") {
+                            transactionViewModel.updateTransaction(transaction) {
+                                transactionViewModel.getAllTransactionForUserAtCard(
+                                    currentUser.id ?: -1, cardList[currentCardIndex].id ?: -1
+                                )
+                            }
+                        }.show()
+                }
+            }
+        }
+        val touchHelper = ItemTouchHelper(swipeGesture)
+        touchHelper.attachToRecyclerView(binding.rvRecent)
 
         // RecentTransactionsAdapter
         initTransactionsRecycler(binding)

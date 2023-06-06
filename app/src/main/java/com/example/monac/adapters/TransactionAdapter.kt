@@ -41,6 +41,11 @@ class TransactionAdapter(
         notifyDataSetChanged()
     }
 
+    fun deleteItem(position: Int) {
+        transactionList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     override fun getItemViewType(position: Int): Int {
         return position
     }
