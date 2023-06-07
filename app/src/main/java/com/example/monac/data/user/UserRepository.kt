@@ -24,7 +24,7 @@ class UserRepository @Inject constructor(
         userDao.getUser(id).collect { send(UiState.Success(it)) }
     }
 
-    suspend fun insertUser(user: User) = userDao.insertUser(user) != -1L
+    suspend fun insertUser(user: User) = userDao.insertUser(user)
 
     suspend fun deleteAllUsers() = userDao.deleteAllUsers()
 }

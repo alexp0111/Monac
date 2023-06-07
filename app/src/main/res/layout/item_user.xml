@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/avatar"
             android:contentDescription="avatar for category"
-            android:scaleType="fitCenter" />
+            android:scaleType="centerCrop" />
     </androidx.cardview.widget.CardView>
 
     <TextView

@@ -9,9 +9,12 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity(tableName = "users")
 data class User(
-    @PrimaryKey(autoGenerate = true) val id: Long? = null,
+    @PrimaryKey(autoGenerate = true) var id: Long? = null,
     val name: String = "",
     var password: String = "",
+    var limitUSD: Double? = null,
+    var limitRUB: Double? = null,
+    var limitEUR: Double? = null,
     val imageUri: String = "",
     val type: UserType = UserType.STANDART,
 ) : Parcelable {

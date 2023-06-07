@@ -17,6 +17,7 @@ import com.example.monac.data.transaction.PaymentTransaction
 import com.example.monac.databinding.FragmentInfoBinding
 import com.example.monac.ui.animator.PickerAnimator
 import com.example.monac.util.TransactionType
+import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -31,7 +32,14 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
 
 
     private val transactionrAdapter by lazy {
-        TransactionAdapter(requireContext())
+        TransactionAdapter(requireContext(),
+            onLongItemClicked = { pos, item ->
+                if (item.comments.isNotEmpty())
+                    Snackbar.make(requireView(), "Комментарий: ${item.comments}", Snackbar.LENGTH_LONG)
+                    .show()
+                true
+            }
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

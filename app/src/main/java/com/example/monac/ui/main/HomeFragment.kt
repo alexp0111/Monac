@@ -129,7 +129,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private val transactionrAdapter by lazy {
-        TransactionAdapter(requireContext())
+        TransactionAdapter(requireContext(),
+            onLongItemClicked = { pos, item ->
+                if (item.comments.isNotEmpty())
+                    Snackbar.make(requireView(), "Комментарий: ${item.comments}", Snackbar.LENGTH_LONG)
+                    .show()
+                true
+            }
+        )
     }
 
     override fun onAttach(context: Context) {
@@ -205,6 +212,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         fragmentHomeBinding?.vpCards?.currentItem = 0
         // transactionViewModel.deleteAllTransactions()
         // cardViewModel.deleteAllCardsForUser(getCurrentUser(requireActivity()).id ?: -1)
+        // categoryViewModel.deleteAllCategoriesForUser(getCurrentUser(requireActivity()).id ?: -1)
         cardViewModel.getAllCardsForUser(getCurrentUser(requireActivity()).id ?: -1)
         categoryViewModel.getAllTransactionUsersForUser(getCurrentUser(requireActivity()).id ?: -1)
     }

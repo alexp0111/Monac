@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         *  5. Role model (limit logic)
         *  [6] Sync card total with transactions
         *  (--7--) Add type field to transactions in user
-        *  8. Maybe info fragment for each transaction (show comments & delete button) [Just as we do in cards & users]
+        *  [8] Maybe info fragment for each transaction (delete & comments)
         * */
     }
 }

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.monac.data.card.Card
 import com.example.monac.data.category.TransactionCategory
 import com.example.monac.data.transaction.PaymentTransaction
@@ -15,6 +14,7 @@ import com.example.monac.util.TransactionType
 
 class TransactionAdapter(
     val context: Context,
+    val onLongItemClicked: (Int, PaymentTransaction) -> Boolean,
 ) :
     RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
@@ -34,7 +34,11 @@ class TransactionAdapter(
         holder.bind(item)
     }
 
-    fun updateList(list: ArrayList<PaymentTransaction>, catList: ArrayList<TransactionCategory>, card: Card) {
+    fun updateList(
+        list: ArrayList<PaymentTransaction>,
+        catList: ArrayList<TransactionCategory>,
+        card: Card
+    ) {
         this.transactionList = list
         this.categoryList = catList
         this.card = card
@@ -83,6 +87,13 @@ class TransactionAdapter(
                 }
             }
             binding.tvValue.append(card.marker)
+
+            binding.card.setOnLongClickListener {
+                onLongItemClicked.invoke(
+                    absoluteAdapterPosition,
+                    transaction
+                )
+            }
         }
     }
 }

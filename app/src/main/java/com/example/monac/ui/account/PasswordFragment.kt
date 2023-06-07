@@ -41,8 +41,8 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
         binding.btnNewPassword.setOnClickListener {
             if (validation(binding)) {
                 user.password = binding.etPasswordProve.text.toString()
-                userViewModel.updateUser(user) { isSuccess ->
-                    if (isSuccess) {
+                userViewModel.updateUser(user) { id ->
+                    if (id != -1L) {
                         Snackbar.make(
                             requireView(),
                             "Пароль изменён",

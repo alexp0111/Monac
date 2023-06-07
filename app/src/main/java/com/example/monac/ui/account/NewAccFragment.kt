@@ -40,7 +40,6 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
                 selectedUri = uri
-                Toast.makeText(requireContext(), uri.toString(), Toast.LENGTH_SHORT).show()
                 fragmentNewAccBinding?.ivAvatar?.let {
                     Glide.with(requireContext())
                         .load(uri)
@@ -67,8 +66,9 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
                     imageUri = selectedUri.toString(),
                     type = type
                 )
-                if (validation(this)) userViewModel.updateUser(user) { isSuccess ->
-                    if (isSuccess) {
+                if (validation(this)) userViewModel.updateUser(user) { id ->
+                    if (id != -1L) {
+                        user.id = id
                         Snackbar.make(
                             requireView(),
                             "Регистрация пройдена успешно",

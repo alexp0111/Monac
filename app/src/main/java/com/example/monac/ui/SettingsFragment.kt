@@ -6,6 +6,9 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,6 +21,7 @@ import com.example.monac.data.category.TransactionCategory
 import com.example.monac.data.getActualContacts
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentSettingsBinding
+import com.example.monac.ui.account.LimitFragment
 import com.example.monac.ui.account.PasswordFragment
 import com.example.monac.util.*
 import com.example.monac.view_model.CategoryViewModel
@@ -51,6 +55,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             parentFragmentManager.popBackStack()
         }
 
+        if (AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_NO)
+            binding.tvThemeValue.text = "Светлая"
+        else binding.tvThemeValue.text = "Темная"
+
         // SSet up info
         binding.apply {
             tvNameValue.text = user.name
@@ -72,6 +80,26 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 .commit()
         }
 
+        binding.tvLimitValue.text = "${user.limitUSD}$ / ${user.limitRUB}₽ / ${user.limitEUR}€"
+
+        binding.cvLimit.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.container, LimitFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        binding.apply {
+            cvTheme.setOnClickListener {
+                if (AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_YES) {
+                    tvThemeValue.text = "Светлая"
+                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+                } else {
+                    tvThemeValue.text = "Темная"
+                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+                }
+            }
+        }
+
         binding.cvPassword.setOnClickListener {
             if (getLogInType(requireActivity())) {
                 setUpLogInType(requireActivity(), false)
@@ -84,9 +112,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         binding.btnLogOut.setOnClickListener {
             clearSP(requireActivity())
-            repeat(parentFragmentManager.backStackEntryCount) {
-                parentFragmentManager.popBackStack()
-            }
+            requireActivity().finishAndRemoveTask()
         }
     }
 
@@ -94,6 +120,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onStart()
         // categoryViewModel.deleteAllCategoriesForUser(user.id ?: -1)
         categoryViewModel.getAllTransactionUsersForUser(user.id ?: -1)
+        fragmentSettingsBinding?.tvLimitValue?.text = "${user.limitUSD}$ / ${user.limitRUB}₽ / ${user.limitEUR}€"
     }
 
     private fun observes() {

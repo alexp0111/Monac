@@ -20,6 +20,7 @@ fun getCurrentUser(requireActivity: FragmentActivity): User {
             "current_user",
             Context.MODE_PRIVATE
         )
+    if (prefs.getString("user", "")?.isEmpty() == true) return User()
     return Gson().fromJson(prefs.getString("user", ""), User::class.java)
 }
 
