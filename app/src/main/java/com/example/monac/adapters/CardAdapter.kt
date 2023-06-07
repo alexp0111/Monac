@@ -24,6 +24,7 @@ class CardAdapter(
 
     private var cardList: ArrayList<Card> = arrayListOf()
     private var currentValue: Double = 0.0
+    private var showValue: Boolean = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Log.d("ADAPTER1", cardList.size.toString())
@@ -47,9 +48,10 @@ class CardAdapter(
         }
     }
 
-    fun updateList(list: ArrayList<Card>) {
+    fun updateList(list: ArrayList<Card>, showValue: Boolean) {
         if (list.isEmpty() || list.last().id != -1L) list.add(Card(id = -1L))
         this.cardList = list
+        this.showValue = showValue
         notifyDataSetChanged()
     }
 
@@ -78,10 +80,12 @@ class CardAdapter(
         fun bind(card: Card) {
             binding.tvName.text = card.name
             // with transactions
-            binding.tvValue.text = buildString {
-                append(currentValue)
-                append(card.marker)
-            }
+            if (showValue){
+                binding.tvValue.text = buildString {
+                    append(currentValue)
+                    append(card.marker)
+                }
+            } else binding.tvValue.text = ""
             binding.tvNumber.text = buildString {
                 append("**** **** **** ")
                 append(card.number)

@@ -53,7 +53,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
     private var currentUser = User()
     private var currentCardIndex = 0
     private var currentTime = "00:00"
-    private var currentDate = "00.00.0000"
+    private var currentDate = "0000.00.00"
     private var currentMarker = "$"
     private var type = TransactionType.EXPENSES
     private var currentCategory = TransactionCategory()
@@ -107,7 +107,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
 
         // Set up tume & date
         currentTime = SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
-        currentDate = SimpleDateFormat("dd.MM.yyyy").format(Calendar.getInstance().time)
+        currentDate = SimpleDateFormat("yyyy.MM.dd").format(Calendar.getInstance().time)
         binding.tvTime.text = currentTime
         binding.tvDate.text = currentDate
 
@@ -274,7 +274,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         calendar.set(Calendar.YEAR, p1)
         val time = calendar.time
 
-        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val sdf = SimpleDateFormat("yyyy.MM.dd")
         val dateInFormat = sdf.format(time)
         currentDate = dateInFormat
         fragmentAddTransactionBinding?.tvDate?.text = dateInFormat
@@ -296,7 +296,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
                     if (it is UiState.Success && it.data != null) {
                         cardList = ArrayList(it.data)
                         binding.tvSum.text = "Сумма (${cardList[0].marker})"
-                        cardAdapter.updateList(cardList)
+                        cardAdapter.updateList(cardList, false)
                     }
                     if (it is UiState.Failure) {
                         Toast.makeText(

@@ -56,13 +56,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var cardList = arrayListOf<Card>()
     private var userList = arrayListOf<TransactionCategory>()
+    private var categoryList = arrayListOf<TransactionCategory>()
     private var transactionListForCard = arrayListOf<PaymentTransaction>()
 
     private val cardAdapter by lazy {
         CardAdapter(requireContext(),
             onItemClicked = { pos, item ->
+                val fragment = InfoFragment()
+
+                val bundle = Bundle()
+                bundle.putParcelableArrayList("transactions", transactionListForCard)
+                bundle.putParcelableArrayList("categories", categoryList)
+                bundle.putParcelable("card", cardList[currentCardIndex])
+                fragment.arguments = bundle
+
                 parentFragmentManager.beginTransaction().addToBackStack(null)
-                    .replace(R.id.container, InfoFragment()).commit()
+                    .replace(R.id.container, fragment).commit()
             },
             onLongItemClicked = { pos, item ->
                 val fragment = NewCardTypeFragment()
@@ -193,6 +202,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onStart() {
         super.onStart()
+        fragmentHomeBinding?.vpCards?.currentItem = 0
         // transactionViewModel.deleteAllTransactions()
         // cardViewModel.deleteAllCardsForUser(getCurrentUser(requireActivity()).id ?: -1)
         cardViewModel.getAllCardsForUser(getCurrentUser(requireActivity()).id ?: -1)
@@ -205,7 +215,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 cardViewModel.allCardsForUser.collect {
                     if (it is UiState.Success && it.data != null) {
                         cardList = ArrayList(it.data)
-                        cardAdapter.updateList(cardList)
+                        cardAdapter.updateList(cardList, true)
 
                         // Get transactions for card
                         if (currentUser.id != null && cardList.isNotEmpty() && cardList[0].id != null) {
@@ -249,10 +259,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 categoryViewModel.allCategoriesForUser.collect {
                     if (it is UiState.Success && it.data != null) {
-                        val categories = ArrayList(it.data)
+                        categoryList = ArrayList(it.data)
                         transactionrAdapter.updateList(
                             transactionListForCard,
-                            categories,
+                            categoryList,
                             cardList[currentCardIndex]
                         )
                     }

@@ -44,8 +44,7 @@ class NewCardTypeFragment : Fragment(R.layout.fragment_new_card_type) {
 
         currentCard = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             arguments?.getParcelable("card", Card::class.java)
-                ?: Card()
-        else arguments?.getParcelable("card") ?: Card()
+        else arguments?.getParcelable("card")
 
         binding.apply {
             if (currentCard != null) {

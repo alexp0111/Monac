@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
-    @Query("SELECT * FROM transactions WHERE userID=:userID AND cardID=:cardID ORDER BY date")
+    @Query("SELECT * FROM transactions WHERE userID=:userID AND cardID=:cardID ORDER BY (date || time) DESC")
     fun getAllTransactionsForUserAtCard(userID: Long, cardID: Long): Flow<List<PaymentTransaction>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
