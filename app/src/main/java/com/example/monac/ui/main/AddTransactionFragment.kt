@@ -66,7 +66,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
     private var categoryList = arrayListOf<TransactionCategory>()
 
     private val cardAdapter by lazy {
-        CardAdapter(requireContext(),
+        CardAdapter(requireContext(), requireActivity(),
             onItemClicked = { _, _ -> },
             onLongItemClicked = { _, _ -> false },
             onItemAddClicked = {

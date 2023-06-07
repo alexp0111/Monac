@@ -60,7 +60,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var transactionListForCard = arrayListOf<PaymentTransaction>()
 
     private val cardAdapter by lazy {
-        CardAdapter(requireContext(),
+        CardAdapter(requireContext(), requireActivity(),
             onItemClicked = { pos, item ->
                 val fragment = InfoFragment()
 
