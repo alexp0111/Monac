@@ -21,14 +21,15 @@
             android:src="@drawable/back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/back_button" />
 
         <TextView
             style="@style/TextHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/basic_margin"
-            android:text="Настройки"
+            android:text="@string/settings"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_back"
@@ -57,7 +58,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/basic_margin"
-                android:text="Аккаунт"
+                android:text="@string/acc"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/basic_margin"
                         android:fontFamily="@font/inter_bold"
-                        android:text="Имя"
+                        android:text="@string/name"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -125,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/basic_margin"
                         android:fontFamily="@font/inter_bold"
-                        android:text="Пароль"
+                        android:text="@string/password"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -167,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/basic_margin"
                         android:fontFamily="@font/inter_bold"
-                        android:text="Тип учетной записи"
+                        android:text="@string/acc_type"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -209,7 +210,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/basic_margin"
                         android:fontFamily="@font/inter_bold"
-                        android:text="Пароль при входе"
+                        android:text="@string/entrance_password"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -247,7 +248,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/basic_margin"
                     android:layout_marginBottom="@dimen/basic_margin"
-                    android:text="Родительский контроль"
+                    android:text="@string/parental_control"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -274,7 +275,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/basic_margin"
                             android:fontFamily="@font/inter_bold"
-                            android:text="Лимит по карте"
+                            android:text="@string/card_limit"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -286,7 +287,6 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/basic_margin"
                             android:gravity="end"
-                            android:text="300$"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tv_limit"
@@ -306,7 +306,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/basic_margin"
                 android:layout_marginBottom="@dimen/basic_margin"
-                android:text="Общие"
+                android:text="@string/common"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_child_section" />
@@ -332,7 +332,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/basic_margin"
                         android:fontFamily="@font/inter_bold"
-                        android:text="Язык"
+                        android:text="@string/language"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -344,7 +344,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/basic_margin"
                         android:gravity="end"
-                        android:text="Русский"
+                        android:text="@string/russian"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tv_language"
@@ -375,7 +375,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/basic_margin"
                         android:fontFamily="@font/inter_bold"
-                        android:text="Тема"
+                        android:text="@string/theme"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -387,7 +387,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/basic_margin"
                         android:gravity="end"
-                        android:text="Темная"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tv_theme"
@@ -403,7 +402,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/basic_margin"
-                android:text="Опасная зона!"
+                android:text="@string/dangerous_zone"
                 android:textColor="@color/red_300"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -417,7 +416,7 @@
                 android:backgroundTint="@color/background_main"
                 android:fontFamily="@font/inter_bold"
                 android:padding="6dp"
-                android:text="выйти"
+                android:text="@string/log_out"
                 android:textColor="@color/gray_800"
                 app:cornerRadius="@dimen/half_card_corner_radius"
                 app:layout_constraintBottom_toBottomOf="parent"

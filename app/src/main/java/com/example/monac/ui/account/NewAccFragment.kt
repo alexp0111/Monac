@@ -71,7 +71,7 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
                         user.id = id
                         Snackbar.make(
                             requireView(),
-                            "Регистрация пройдена успешно",
+                            getString(R.string.registration_succeed),
                             Snackbar.LENGTH_LONG
                         ).show()
 
@@ -83,13 +83,13 @@ class NewAccFragment : Fragment(R.layout.fragment_new_acc) {
                             .replace(R.id.container, HomeFragment()).commit()
                     } else Snackbar.make(
                         requireView(),
-                        "Зарегистрировать пользователя не удалось",
+                        getString(R.string.registration_error),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
                 else Snackbar.make(
                     requireView(),
-                    "Заполните все данные, пожалуйста",
+                    getString(R.string.fill_all_fields),
                     Snackbar.LENGTH_LONG
                 ).show()
             }

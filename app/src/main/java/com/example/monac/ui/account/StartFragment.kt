@@ -1,14 +1,8 @@
 package com.example.monac.ui.account
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,8 +11,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.monac.R
 import com.example.monac.adapters.UserAdapter
-import com.example.monac.data.card.Card
-import com.example.monac.data.getActualContacts
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentStartBinding
 import com.example.monac.ui.main.HomeFragment
@@ -26,9 +18,6 @@ import com.example.monac.util.UiState
 import com.example.monac.util.getCurrentUser
 import com.example.monac.util.getLogInType
 import com.example.monac.util.isSPClear
-import com.example.monac.view_model.CardViewModel
-import com.example.monac.view_model.CategoryViewModel
-import com.example.monac.view_model.TransactionViewModel
 import com.example.monac.view_model.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -37,9 +26,6 @@ import kotlinx.coroutines.launch
 class StartFragment : Fragment(R.layout.fragment_start) {
 
     private val userViewModel: UserViewModel by viewModels()
-    private val cardViewModel: CardViewModel by viewModels()
-    private val categoryViewModel: CategoryViewModel by viewModels()
-    private val transactionViewModel: TransactionViewModel by viewModels()
 
     private var fragmentStartBinding: FragmentStartBinding? = null
 
@@ -47,7 +33,7 @@ class StartFragment : Fragment(R.layout.fragment_start) {
 
     private val userAdapter by lazy {
         UserAdapter(requireContext(),
-            onItemClicked = { pos, item ->
+            onItemClicked = { _, item ->
                 val fragment = LogInFragment()
                 val bundle = Bundle()
                 bundle.putParcelable("user", item)
@@ -61,10 +47,6 @@ class StartFragment : Fragment(R.layout.fragment_start) {
                     .replace(R.id.container, NewAccFragment()).commit()
             }
         )
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +70,6 @@ class StartFragment : Fragment(R.layout.fragment_start) {
 
     override fun onStart() {
         super.onStart()
-        // userViewModel.deleteAllUsers()
         userViewModel.getAllUsers()
     }
 
@@ -99,10 +80,10 @@ class StartFragment : Fragment(R.layout.fragment_start) {
         fragmentStartBinding = binding
 
         initUserAdapter(binding)
-        observers(binding)
+        observers()
     }
 
-    private fun observers(binding: FragmentStartBinding) {
+    private fun observers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 userViewModel.allUsers.collect {

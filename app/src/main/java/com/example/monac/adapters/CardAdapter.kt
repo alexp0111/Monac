@@ -34,7 +34,6 @@ class CardAdapter(
     private var showValue: Boolean = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Log.d("ADAPTER1", cardList.size.toString())
         if (viewType == cardList.size - 1) {
             val view =
                 ItemCardAddBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -45,8 +44,6 @@ class CardAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d("ADAPTER2", cardList[position].toString())
-        Log.d("ADAPTER3", cardList.size.toString())
         if (holder.itemViewType == cardList.size - 1) {
             (holder as CardAddViewHolder).bind()
         } else {

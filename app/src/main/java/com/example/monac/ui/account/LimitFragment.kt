@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import com.example.monac.R
 import com.example.monac.data.user.User
 import com.example.monac.databinding.FragmentLimitBinding
-import com.example.monac.ui.main.HomeFragment
 import com.example.monac.util.*
 import com.example.monac.view_model.UserViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -48,7 +47,7 @@ class LimitFragment : Fragment(R.layout.fragment_limit) {
                     if (id != -1L) {
                         Snackbar.make(
                             requireView(),
-                            "Лимит установлен",
+                            getString(R.string.limit_setted),
                             Snackbar.LENGTH_LONG
                         ).show()
 
@@ -60,13 +59,13 @@ class LimitFragment : Fragment(R.layout.fragment_limit) {
                         parentFragmentManager.popBackStack()
                     } else Snackbar.make(
                         requireView(),
-                        "Установить лимит не удалось",
+                        getString(R.string.limit_error),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
             } else Snackbar.make(
                 requireView(),
-                "Заполните все данные, пожалуйста",
+                getString(R.string.fill_all_fields),
                 Snackbar.LENGTH_LONG
             ).show()
         }

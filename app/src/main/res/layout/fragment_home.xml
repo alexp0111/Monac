@@ -28,7 +28,7 @@
                 android:id="@+id/iv_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="avatar for category"
+                android:contentDescription="@string/avatar_for_category"
                 android:scaleType="centerCrop"
                 android:src="@drawable/sasuke" />
         </androidx.cardview.widget.CardView>
@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/basic_margin"
             android:fontFamily="@font/inter_bold"
-            android:text="Здравствуйте, Александр!"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_settings"
             app:layout_constraintStart_toEndOf="@id/cv_avatar"
@@ -54,7 +53,8 @@
             android:src="@drawable/settings"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/button_for_settings_fragment" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -73,7 +73,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/basic_margin"
-        android:text="Переводы"
+        android:text="@string/transactions"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vp_cards" />
 
@@ -90,7 +90,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/basic_margin"
-        android:text="Недавнее"
+        android:text="@string/recent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_transactions" />
 
@@ -110,6 +110,7 @@
         android:src="@drawable/transaction"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/button_for_adding_new_transaction" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

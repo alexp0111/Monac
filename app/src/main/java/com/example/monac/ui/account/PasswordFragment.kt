@@ -45,7 +45,7 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
                     if (id != -1L) {
                         Snackbar.make(
                             requireView(),
-                            "Пароль изменён",
+                            getString(R.string.password_changed),
                             Snackbar.LENGTH_LONG
                         ).show()
 
@@ -54,14 +54,14 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
                         parentFragmentManager.popBackStack()
                     } else Snackbar.make(
                         requireView(),
-                        "Изменить пароль не удалось",
+                        getString(R.string.password_change_error),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
             } else {
                 Snackbar.make(
                     requireView(),
-                    "Убедитесь, что поля заполнены корректно",
+                    getString(R.string.fill_all_fields),
                     Snackbar.LENGTH_LONG
                 ).show()
             }

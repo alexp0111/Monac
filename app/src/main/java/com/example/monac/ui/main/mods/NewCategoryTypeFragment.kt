@@ -49,17 +49,17 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
                 ?: "") == "transaction"
         ) PaymentType.TRANSACTION else PaymentType.CATEGORY
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            currentCategory = arguments?.getParcelable("category", TransactionCategory::class.java)
-        else currentCategory = arguments?.getParcelable("category")
+        currentCategory = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            arguments?.getParcelable("category", TransactionCategory::class.java)
+        else arguments?.getParcelable("category")
 
         binding.apply {
             if (type == PaymentType.CATEGORY) {
-                tvHeader.text = "Новая категория"
+                tvHeader.text = getString(R.string.new_transaction_type)
                 tvPhone.visibility = View.GONE
                 clPhone.visibility = View.GONE
             } else {
-                tvHeader.text = "Новый перевод"
+                tvHeader.text = getString(R.string.new_transaction)
                 tvPhone.visibility = View.VISIBLE
                 clPhone.visibility = View.VISIBLE
 
@@ -107,21 +107,21 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
                     if (isSuccess) {
                         Snackbar.make(
                             requireView(),
-                            "Успешно добавлено",
+                            getString(R.string.added_successfully),
                             Snackbar.LENGTH_LONG
                         ).show()
 
                         parentFragmentManager.popBackStack()
                     } else Snackbar.make(
                         requireView(),
-                        "Не удалось добавить",
+                        getString(R.string.add_error),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
             } else {
                 Snackbar.make(
                     requireView(),
-                    "Убедитесь, что поля заполнены корректно",
+                    getString(R.string.fill_all_fields),
                     Snackbar.LENGTH_LONG
                 ).show()
             }
@@ -129,7 +129,7 @@ class NewCategoryTypeFragment : Fragment(R.layout.fragment_new_category_type) {
 
 
         binding.ivColorPicker.apply {
-            setOnTouchListener { view, event ->
+            setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
                     try {
                         val pixels: Int =

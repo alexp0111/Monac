@@ -35,7 +35,6 @@ import com.example.monac.util.getCurrentUser
 import com.example.monac.view_model.CardViewModel
 import com.example.monac.view_model.CategoryViewModel
 import com.example.monac.view_model.TransactionViewModel
-import com.example.monac.view_model.UserViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,13 +42,11 @@ import kotlin.math.abs
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
-    private val TAG = "HOME_FRAGMENT"
     private var fragmentHomeBinding: FragmentHomeBinding? = null
 
     private var currentUser = User()
     private var currentCardIndex = 0
 
-    private val userViewModel: UserViewModel by viewModels()
     private val cardViewModel: CardViewModel by viewModels()
     private val categoryViewModel: CategoryViewModel by viewModels()
     private val transactionViewModel: TransactionViewModel by viewModels()
@@ -61,7 +58,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val cardAdapter by lazy {
         CardAdapter(requireContext(), requireActivity(),
-            onItemClicked = { pos, item ->
+            onItemClicked = { _, _ ->
                 val fragment = InfoFragment()
 
                 val bundle = Bundle()
@@ -73,7 +70,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 parentFragmentManager.beginTransaction().addToBackStack(null)
                     .replace(R.id.container, fragment).commit()
             },
-            onLongItemClicked = { pos, item ->
+            onLongItemClicked = { _, item ->
                 val fragment = NewCardTypeFragment()
 
                 val bundle = Bundle()
@@ -93,7 +90,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val transactionUserAdapter by lazy {
         TransactionUserAdapter(requireContext(),
-            onItemClicked = { pos, item ->
+            onItemClicked = { _, item ->
                 val fragment = AddTransactionFragment()
 
                 val bundle = Bundle()
@@ -103,7 +100,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 parentFragmentManager.beginTransaction().addToBackStack(null)
                     .replace(R.id.container, fragment).commit()
             },
-            onLongItemClicked = { pos, item ->
+            onLongItemClicked = { _, item ->
                 val fragment = NewCategoryTypeFragment()
 
                 val bundle = Bundle()
@@ -128,12 +125,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         )
     }
 
-    private val transactionrAdapter by lazy {
+    private val transactionAdapter by lazy {
         TransactionAdapter(requireContext(),
-            onLongItemClicked = { pos, item ->
+            onLongItemClicked = { _, item ->
                 if (item.comments.isNotEmpty())
-                    Snackbar.make(requireView(), "Комментарий: ${item.comments}", Snackbar.LENGTH_LONG)
-                    .show()
+                    Snackbar.make(
+                        requireView(),
+                        "${getString(R.string.comments)}: ${item.comments}",
+                        Snackbar.LENGTH_LONG
+                    )
+                        .show()
                 true
             }
         )
@@ -150,14 +151,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val binding = FragmentHomeBinding.bind(view)
         fragmentHomeBinding = binding
 
-        observers(binding)
+        observers()
 
         Glide.with(requireContext())
             .load(currentUser.imageUri.toUri())
             .into(binding.ivAvatar)
 
         binding.tvHelloName.text = buildString {
-            append("Здравствуйте, ")
+            append(getString(R.string.hello))
             append(currentUser.name)
             append("!")
         }
@@ -187,10 +188,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     val transaction =
                         transactionListForCard[viewHolder.absoluteAdapterPosition]
                     transactionViewModel.deleteTransaction(transaction)
-                    transactionrAdapter.deleteItem(viewHolder.absoluteAdapterPosition)
+                    transactionAdapter.deleteItem(viewHolder.absoluteAdapterPosition)
 
-                    Snackbar.make(requireView(), "Удалено из списка", Snackbar.LENGTH_LONG)
-                        .setAction("Восстановить") {
+                    Snackbar.make(requireView(), getString(R.string.removed_from_list), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.restore)) {
                             transactionViewModel.updateTransaction(transaction) {
                                 transactionViewModel.getAllTransactionForUserAtCard(
                                     currentUser.id ?: -1, cardList[currentCardIndex].id ?: -1
@@ -210,14 +211,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onStart() {
         super.onStart()
         fragmentHomeBinding?.vpCards?.currentItem = 0
-        // transactionViewModel.deleteAllTransactions()
-        // cardViewModel.deleteAllCardsForUser(getCurrentUser(requireActivity()).id ?: -1)
-        // categoryViewModel.deleteAllCategoriesForUser(getCurrentUser(requireActivity()).id ?: -1)
         cardViewModel.getAllCardsForUser(getCurrentUser(requireActivity()).id ?: -1)
         categoryViewModel.getAllTransactionUsersForUser(getCurrentUser(requireActivity()).id ?: -1)
     }
 
-    private fun observers(binding: FragmentHomeBinding) {
+    private fun observers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 cardViewModel.allCardsForUser.collect {
@@ -268,7 +266,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 categoryViewModel.allCategoriesForUser.collect {
                     if (it is UiState.Success && it.data != null) {
                         categoryList = ArrayList(it.data)
-                        transactionrAdapter.updateList(
+                        transactionAdapter.updateList(
                             transactionListForCard,
                             categoryList,
                             cardList[currentCardIndex]
@@ -287,12 +285,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                categoryViewModel.allTransactionUsersForUser.collect {
-                    if (it is UiState.Success && it.data != null) {
-                        userList = ArrayList(it.data)
+                categoryViewModel.allTransactionUsersForUser.collect {dataList ->
+                    if (dataList is UiState.Success && dataList.data != null) {
+                        userList = ArrayList(dataList.data)
                         transactionUserAdapter.updateList(ArrayList(userList.sortedWith(compareBy { it.name })))
                     }
-                    if (it is UiState.Failure) {
+                    if (dataList is UiState.Failure) {
                         Toast.makeText(
                             requireContext(),
                             "sww",
@@ -310,7 +308,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val manager = LinearLayoutManager(context)
         manager.orientation = LinearLayoutManager.VERTICAL
         binding.rvRecent.layoutManager = manager
-        binding.rvRecent.adapter = transactionrAdapter
+        binding.rvRecent.adapter = transactionAdapter
     }
 
     private fun initUserRecycler(

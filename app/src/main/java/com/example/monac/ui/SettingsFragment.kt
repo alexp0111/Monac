@@ -56,15 +56,19 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
 
         if (AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_NO)
-            binding.tvThemeValue.text = "Светлая"
-        else binding.tvThemeValue.text = "Темная"
+            binding.tvThemeValue.text = getString(R.string.light)
+        else binding.tvThemeValue.text = getString(R.string.dark)
 
         // SSet up info
         binding.apply {
             tvNameValue.text = user.name
             tvPasswordChangeValue.text = user.password.replace(".".toRegex(), "*")
-            tvTypeValue.text = if (user.type == UserType.STANDART) "Стандарт" else "Детский"
-            tvPasswordValue.text = if (getLogInType(requireActivity())) "Да" else "Нет"
+            tvTypeValue.text =
+                if (user.type == UserType.STANDART) getString(R.string.standart) else getString(R.string.child)
+            tvPasswordValue.text =
+                if (getLogInType(requireActivity())) getString(R.string.yes) else getString(
+                    R.string.no
+                )
 
             if (user.type == UserType.STANDART) {
                 val params = clChildSection.layoutParams
@@ -80,7 +84,14 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 .commit()
         }
 
-        binding.tvLimitValue.text = "${user.limitUSD}$ / ${user.limitRUB}₽ / ${user.limitEUR}€"
+        binding.tvLimitValue.text = buildString {
+            append(user.limitUSD)
+            append("$ / ")
+            append(user.limitRUB)
+            append("₽ / ")
+            append(user.limitEUR)
+            append("€")
+        }
 
         binding.cvLimit.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.container, LimitFragment())
@@ -91,10 +102,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         binding.apply {
             cvTheme.setOnClickListener {
                 if (AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_YES) {
-                    tvThemeValue.text = "Светлая"
+                    tvThemeValue.text = getString(R.string.light)
                     AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
                 } else {
-                    tvThemeValue.text = "Темная"
+                    tvThemeValue.text = getString(R.string.dark)
                     AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
                 }
             }
@@ -103,10 +114,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         binding.cvPassword.setOnClickListener {
             if (getLogInType(requireActivity())) {
                 setUpLogInType(requireActivity(), false)
-                binding.tvPasswordValue.text = "Нет"
+                binding.tvPasswordValue.text = getString(R.string.no)
             } else {
                 setUpLogInType(requireActivity(), true)
-                binding.tvPasswordValue.text = "Да"
+                binding.tvPasswordValue.text = getString(R.string.yes)
             }
         }
 
@@ -120,7 +131,15 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onStart()
         // categoryViewModel.deleteAllCategoriesForUser(user.id ?: -1)
         categoryViewModel.getAllTransactionUsersForUser(user.id ?: -1)
-        fragmentSettingsBinding?.tvLimitValue?.text = "${user.limitUSD}$ / ${user.limitRUB}₽ / ${user.limitEUR}€"
+        fragmentSettingsBinding?.tvLimitValue?.text =
+            buildString {
+                append(user.limitUSD)
+                append("$ / ")
+                append(user.limitRUB)
+                append("₽ / ")
+                append(user.limitEUR)
+                append("€")
+            }
     }
 
     private fun observes() {

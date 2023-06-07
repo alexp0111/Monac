@@ -30,7 +30,7 @@
                 android:id="@+id/iv_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="avatar for category"
+                android:contentDescription="@string/avatar_for_category"
                 android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
 
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/basic_margin"
             android:gravity="center"
-            android:text="Имя пользователя"
+            android:text="@string/user_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cv_avatar" />
@@ -67,7 +67,7 @@
             android:layout_margin="@dimen/basic_margin"
             android:background="@null"
             android:gravity="center|bottom"
-            android:hint="Введите пароль"
+            android:hint="@string/enter_password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:lines="1"
@@ -79,7 +79,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAutofill="no" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -90,7 +91,7 @@
         android:layout_margin="@dimen/basic_margin"
         android:backgroundTint="@color/orange_400"
         android:fontFamily="@font/inter_bold"
-        android:text="войти"
+        android:text="@string/log_in"
         android:textColor="@color/background_main"
         app:cornerRadius="@dimen/half_card_corner_radius"
         app:layout_constraintBottom_toBottomOf="parent"

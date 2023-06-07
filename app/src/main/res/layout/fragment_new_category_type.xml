@@ -21,7 +21,8 @@
             android:src="@drawable/back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/back_button" />
 
         <TextView
             android:id="@+id/tv_header"
@@ -29,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/basic_margin"
-            android:text="Новый перевод"
+            android:text="@string/new_transaction_type"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_back"
@@ -44,7 +45,8 @@
         android:layout_height="0dp"
         android:padding="@dimen/basic_margin"
         android:src="@drawable/color_picker"
-        app:layout_constraintDimensionRatio="1:1" />
+        app:layout_constraintDimensionRatio="1:1"
+        android:contentDescription="@string/color_picker_wheel" />
 
     <TextView
         android:id="@+id/tv_details"
@@ -52,7 +54,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/basic_margin"
-        android:text="Детали"
+        android:text="@string/details"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_color_picker" />
@@ -77,7 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/basic_margin"
-                android:text="Имя"
+                android:text="@string/name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -98,7 +100,7 @@
                     android:layout_margin="@dimen/basic_margin"
                     android:background="@null"
                     android:gravity="center|bottom"
-                    android:hint="Введите имя"
+                    android:hint="@string/hint_enter_name"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:lines="1"
@@ -110,7 +112,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAutofill="no" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -120,7 +123,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/basic_margin"
-                android:text="Телефон"
+                android:text="@string/phone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_name" />
@@ -141,7 +144,7 @@
                     android:layout_margin="@dimen/basic_margin"
                     android:background="@null"
                     android:gravity="center|bottom"
-                    android:hint="_ ___ ___ __ __"
+                    android:hint="@string/hint_phone"
                     android:imeOptions="actionDone"
                     android:inputType="phone"
                     android:lines="1"
@@ -153,7 +156,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAutofill="no" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -163,7 +167,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/basic_margin"
-                android:text="Комментарии"
+                android:text="@string/comments"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_phone" />
@@ -184,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/basic_margin"
                     android:background="@null"
-                    android:hint="Введите комментарий"
+                    android:hint="@string/hint_comments"
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
                     android:textColor="@color/main_text_color"
@@ -193,7 +197,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAutofill="no" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -210,5 +215,6 @@
         android:src="@drawable/done"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/button_for_saving_new_category_type" />
 </androidx.constraintlayout.motion.widget.MotionLayout>

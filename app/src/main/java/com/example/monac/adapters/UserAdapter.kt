@@ -60,7 +60,6 @@ class UserAdapter(
             binding.tvName.text = user.name
             binding.tvName.isSelected = true
             user.imageUri.toUri().let {
-                Log.d("USERADAPTER", it.toString())
                 Glide.with(context)
                     .load(it)
                     .into(binding.ivAvatar)

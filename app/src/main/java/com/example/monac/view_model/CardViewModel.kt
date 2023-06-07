@@ -46,5 +46,4 @@ class CardViewModel @Inject constructor(
             repository.deleteAllCardsForUser(userID)
         }
     }
-
 }

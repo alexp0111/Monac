@@ -57,14 +57,14 @@ class LogInFragment : Fragment(R.layout.fragment_log_in) {
                 } else {
                     Snackbar.make(
                         requireView(),
-                        "Похоже, что пароль не подходит",
+                        getString(R.string.password_error),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
             } else {
                 Snackbar.make(
                     requireView(),
-                    "Пожалуйста, введите пароль",
+                    getString(R.string.please_enter_password),
                     Snackbar.LENGTH_LONG
                 ).show()
             }

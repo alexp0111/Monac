@@ -2,8 +2,8 @@ package com.example.monac.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.monac.data.user.UserRepository
 import com.example.monac.data.user.User
+import com.example.monac.data.user.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,13 +35,13 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun updateUser(user: User, id: (Long) -> Unit){
+    fun updateUser(user: User, id: (Long) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             id.invoke(repository.insertUser(user))
         }
     }
 
-    fun deleteAllUsers(){
+    fun deleteAllUsers() {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAllUsers()
         }

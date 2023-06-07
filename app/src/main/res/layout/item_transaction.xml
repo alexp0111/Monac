@@ -29,7 +29,7 @@
                 android:src="@drawable/avatar"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:contentDescription="avatar for category" />
+                android:contentDescription="@string/avatar_for_category" />
         </com.google.android.material.card.MaterialCardView>
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -50,10 +50,8 @@ class NewCardTypeFragment : Fragment(R.layout.fragment_new_card_type) {
             if (currentCard != null) {
                 tvHeader.text = currentCard!!.name
                 currentCard!!.color.let {
-                    if (it != null) {
-                        tvHeader.setTextColor(it)
-                        currentColor = it
-                    }
+                    tvHeader.setTextColor(it)
+                    currentColor = it
                 }
                 etName.setText(currentCard!!.name)
                 etCardNumber.setText(currentCard!!.number)
@@ -77,7 +75,7 @@ class NewCardTypeFragment : Fragment(R.layout.fragment_new_card_type) {
         }
 
         binding.ivColorPicker.apply {
-            setOnTouchListener { view, event ->
+            setOnTouchListener { _, event ->
                 if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
                     try {
                         val pixels: Int =
@@ -111,21 +109,21 @@ class NewCardTypeFragment : Fragment(R.layout.fragment_new_card_type) {
                     if (isSuccess) {
                         Snackbar.make(
                             requireView(),
-                            "карта добавлена",
+                            getString(R.string.card_added),
                             Snackbar.LENGTH_LONG
                         ).show()
 
                         parentFragmentManager.popBackStack()
                     } else Snackbar.make(
                         requireView(),
-                        "Не удалось добавить карту",
+                        getString(R.string.card_add_error),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
             } else {
                 Snackbar.make(
                     requireView(),
-                    "Убедитесь, что поля заполнены корректно",
+                    getString(R.string.fill_all_fields),
                     Snackbar.LENGTH_LONG
                 ).show()
             }

@@ -21,7 +21,8 @@
             android:src="@drawable/back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/back_button" />
 
         <TextView
             android:id="@+id/tv_header"
@@ -29,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/basic_margin"
-            android:text="Новая карта"
+            android:text="@string/new_card"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_back"
@@ -44,7 +45,8 @@
         android:layout_height="0dp"
         android:padding="@dimen/basic_margin"
         android:src="@drawable/color_picker"
-        app:layout_constraintDimensionRatio="1:1" />
+        app:layout_constraintDimensionRatio="1:1"
+        android:contentDescription="@string/color_picker_wheel" />
 
 
     <TextView
@@ -53,7 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/basic_margin"
-        android:text="Детали"
+        android:text="@string/details"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_color_picker" />
@@ -78,7 +80,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/basic_margin"
-                android:text="Название"
+                android:text="@string/title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -99,7 +101,7 @@
                     android:layout_margin="@dimen/basic_margin"
                     android:background="@null"
                     android:gravity="center|bottom"
-                    android:hint="Введите название"
+                    android:hint="@string/hint_title"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:lines="1"
@@ -111,7 +113,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAutofill="no" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -121,7 +124,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/basic_margin"
-                android:text="Последние 4 цифры номера"
+                android:text="@string/last_4_card_numbers"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_name" />
@@ -142,7 +145,7 @@
                     android:layout_margin="@dimen/basic_margin"
                     android:background="@null"
                     android:gravity="center|bottom"
-                    android:hint="****"
+                    android:hint="@string/hint_number"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:lines="1"
@@ -154,7 +157,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAutofill="no" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -164,7 +168,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/basic_margin"
-                android:text="Платежный инструмент"
+                android:text="@string/payment_instrument"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_card_number" />
@@ -184,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/basic_margin"
                     android:gravity="center"
-                    android:text="MasterCard"
+                    android:text="@string/mastercard"
                     android:textColor="@color/picker_text_on"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_mir"
@@ -198,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/basic_margin"
                     android:gravity="center"
-                    android:text="Mir"
+                    android:text="@string/mir"
                     android:textColor="@color/picker_text_off"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -213,7 +217,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/basic_margin"
-                android:text="Валюта"
+                android:text="@string/currency"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_instrument" />
@@ -233,7 +237,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/basic_margin"
                     android:gravity="center"
-                    android:text="$"
+                    android:text="@string/usd"
                     android:textColor="@color/picker_text_on"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_rub"
@@ -247,7 +251,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/basic_margin"
                     android:gravity="center"
-                    android:text="₽"
+                    android:text="@string/rub"
                     android:textColor="@color/picker_text_off"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_eur"
@@ -261,7 +265,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/basic_margin"
                     android:gravity="center"
-                    android:text="€"
+                    android:text="@string/eur"
                     android:textColor="@color/picker_text_off"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -276,7 +280,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/basic_margin"
-                android:text="Комментарии"
+                android:text="@string/comments"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_currency" />
@@ -297,7 +301,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/basic_margin"
                     android:background="@null"
-                    android:hint="Введите комментарий"
+                    android:hint="@string/hint_comments"
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
                     android:textColor="@color/main_text_color"
@@ -306,7 +310,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:importantForAutofill="no" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -323,5 +328,6 @@
         android:src="@drawable/done"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/button_for_saving_new_card" />
 </androidx.constraintlayout.motion.widget.MotionLayout>

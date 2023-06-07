@@ -1,12 +1,12 @@
 package com.example.monac.ui.main
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.DatePicker
 import android.widget.TimePicker
@@ -80,7 +80,6 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         CategoryAdapter(
             requireContext(),
             onItemClicked = { _, category ->
-                Log.d("QWERTYUI", "1212")
                 fragmentAddTransactionBinding?.etCategory?.setText(category.name)
                 currentCategory = category
             },
@@ -92,6 +91,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         currentUser = getCurrentUser(requireActivity())
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -100,10 +100,10 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
 
         observers(binding)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            currentCategory = arguments?.getParcelable("category", TransactionCategory::class.java)
+        currentCategory = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            arguments?.getParcelable("category", TransactionCategory::class.java)
                 ?: TransactionCategory()
-        else currentCategory = arguments?.getParcelable("category") ?: TransactionCategory()
+        else arguments?.getParcelable("category") ?: TransactionCategory()
 
         // Set up tume & date
         currentTime = SimpleDateFormat("HH:mm").format(Calendar.getInstance().time)
@@ -156,7 +156,10 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         }
 
         // summ
-        binding.tvSum.setText("Сумма ($)")
+        binding.tvSum.text = buildString {
+            append(getString(R.string.sum))
+            append(" ($)") // category search
+        }
 
         // category search
         binding.etCategory.addTextChangedListener {
@@ -220,21 +223,21 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
                     if (isSuccess) {
                         Snackbar.make(
                             requireView(),
-                            "операция добавлена",
+                            getString(R.string.add_operation),
                             Snackbar.LENGTH_LONG
                         ).show()
 
                         parentFragmentManager.popBackStack()
                     } else Snackbar.make(
                         requireView(),
-                        "Не удалось добавить операцию",
+                        getString(R.string.add_operation_error),
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
             } else {
                 Snackbar.make(
                     requireView(),
-                    "Убедитесь, что поля заполнены корректно",
+                    getString(R.string.fill_all_fields),
                     Snackbar.LENGTH_LONG
                 ).show()
             }
@@ -254,8 +257,8 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         binding.rvCategories.adapter = categoryAdapter
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
-        Log.d("TYTYTY", p1.toString())
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, p1)
         calendar.set(Calendar.MINUTE, p2)
@@ -267,6 +270,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         fragmentAddTransactionBinding?.tvTime?.text = timeInFormat
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_MONTH, p3)
@@ -295,7 +299,10 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
                 cardViewModel.allCardsForUser.collect {
                     if (it is UiState.Success && it.data != null) {
                         cardList = ArrayList(it.data)
-                        binding.tvSum.text = "Сумма (${cardList[0].marker})"
+                        binding.tvSum.text = buildString {
+                            append(getString(R.string.sum))
+                            append(" (${cardList[0].marker})")
+                        }
                         cardAdapter.updateList(cardList, false)
                     }
                     if (it is UiState.Failure) {
@@ -335,7 +342,10 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 currentCardIndex = position
-                binding.tvSum.text = "Сумма (${cardList[position].marker})"
+                binding.tvSum.text = buildString {
+                    append(getString(R.string.sum))
+                    append(" (${cardList[position].marker})")
+                }
                 currentMarker = cardList[position].marker
             }
         })

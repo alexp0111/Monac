@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/avatar"
-            android:contentDescription="avatar for category"
+            android:contentDescription="@string/avatar_for_category"
             android:scaleType="centerCrop" />
     </androidx.cardview.widget.CardView>
 
@@ -35,7 +35,6 @@
         android:gravity="center"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
-        android:text="ctfvgybhunjimutfvgybihunjimufvgybhnjmkufvgbhnj"
         app:layout_constraintEnd_toEndOf="@+id/cv_avatar"
         app:layout_constraintStart_toStartOf="@+id/cv_avatar"
         app:layout_constraintTop_toBottomOf="@+id/cv_avatar" />

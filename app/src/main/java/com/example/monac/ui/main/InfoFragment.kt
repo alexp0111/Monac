@@ -31,11 +31,11 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
     private var card = Card()
 
 
-    private val transactionrAdapter by lazy {
+    private val transactionAdapter by lazy {
         TransactionAdapter(requireContext(),
-            onLongItemClicked = { pos, item ->
+            onLongItemClicked = { _, item ->
                 if (item.comments.isNotEmpty())
-                    Snackbar.make(requireView(), "Комментарий: ${item.comments}", Snackbar.LENGTH_LONG)
+                    Snackbar.make(requireView(), "${getString(R.string.comments)}: ${item.comments}", Snackbar.LENGTH_LONG)
                     .show()
                 true
             }
@@ -99,7 +99,6 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
     private fun setUpChartForPeriod(it: String, binding: FragmentInfoBinding) {
         val shownList = getListForPeriod(it)
         binding.lineChart.animate(shownList.asReversed())
-        // adapter.updateList(infoList!![i].asDoubleList(), currency)
     }
 
     private fun getListForPeriod(period: String): ArrayList<Pair<String, Float>> {
@@ -120,7 +119,7 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
                 else -> list.add(it)
             }
         }
-        transactionrAdapter.updateList(list, categoryList, card)
+        transactionAdapter.updateList(list, categoryList, card)
         return list.asPairedList()
     }
 
@@ -130,7 +129,7 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
         val manager = LinearLayoutManager(context)
         manager.orientation = LinearLayoutManager.VERTICAL
         binding.rvOperations.layoutManager = manager
-        binding.rvOperations.adapter = transactionrAdapter
+        binding.rvOperations.adapter = transactionAdapter
     }
 
     override fun onDestroy() {

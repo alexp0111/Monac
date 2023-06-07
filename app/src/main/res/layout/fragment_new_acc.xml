@@ -20,7 +20,8 @@
             android:src="@drawable/back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/back_button" />
 
         <TextView
             android:id="@+id/tv_header"
@@ -28,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/basic_margin"
-            android:text="Новый аккаунт"
+            android:text="@string/new_acc"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_back"
@@ -54,7 +55,7 @@
             android:id="@+id/iv_avatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="avatar for category"
+            android:contentDescription="@string/avatar_for_category"
             android:scaleType="centerCrop"
             android:src="@drawable/rounded_add" />
     </androidx.cardview.widget.CardView>
@@ -65,7 +66,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/basic_margin"
-        android:text="Имя"
+        android:text="@string/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cv_avatar" />
@@ -86,7 +87,7 @@
             android:layout_margin="@dimen/basic_margin"
             android:background="@null"
             android:gravity="center|bottom"
-            android:hint="Введите имя"
+            android:hint="@string/hint_enter_name"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1"
@@ -98,7 +99,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAutofill="no" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -108,7 +110,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/basic_margin"
-        android:text="Пароль"
+        android:text="@string/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_name" />
@@ -129,7 +131,7 @@
             android:layout_margin="@dimen/basic_margin"
             android:background="@null"
             android:gravity="center|bottom"
-            android:hint="Введите пароль"
+            android:hint="@string/enter_password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:lines="1"
@@ -141,7 +143,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAutofill="no" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -151,7 +154,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/basic_margin"
-        android:text="Тип"
+        android:text="@string/type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_password" />
@@ -171,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/basic_margin"
             android:gravity="center"
-            android:text="Стандарт"
+            android:text="@string/standart"
             android:textColor="@color/picker_text_on"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_child"
@@ -185,7 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/basic_margin"
             android:gravity="center"
-            android:text="Детский"
+            android:text="@string/child"
             android:textColor="@color/picker_text_off"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -201,7 +204,7 @@
         android:layout_margin="@dimen/basic_margin"
         android:backgroundTint="@color/orange_400"
         android:fontFamily="@font/inter_bold"
-        android:text="создать аккаунт"
+        android:text="@string/create_acc"
         android:textColor="@color/background_main"
         app:cornerRadius="@dimen/half_card_corner_radius"
         app:layout_constraintEnd_toEndOf="parent"
