@@ -208,7 +208,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         }
 
         binding.fab.setOnClickListener {
-            if (validation(binding)) {
+            if (validation(binding) && cardList.isNotEmpty() && currentCardIndex != cardList.size-1) {
                 val transaction = PaymentTransaction(
                     userID = currentUser.id,
                     value = binding.etSum.text.toString().toDouble(),
@@ -297,7 +297,7 @@ class AddTransactionFragment : Fragment(R.layout.fragment_add_transaction),
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 cardViewModel.allCardsForUser.collect {
-                    if (it is UiState.Success && it.data != null) {
+                    if (it is UiState.Success && it.data != null && it.data.isNotEmpty()) {
                         cardList = ArrayList(it.data)
                         binding.tvSum.text = buildString {
                             append(getString(R.string.sum))

@@ -26,8 +26,8 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
 
     private var datePicker = mutableMapOf<ConstraintLayout, TextView>()
 
-    private var transactionList = arrayListOf<PaymentTransaction>()
-    private var categoryList = arrayListOf<TransactionCategory>()
+    private var transactionList: ArrayList<PaymentTransaction> = arrayListOf()
+    private var categoryList:ArrayList<TransactionCategory> = arrayListOf()
     private var card = Card()
 
 
@@ -63,6 +63,10 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
             ) as ArrayList<TransactionCategory>
 
             card = arguments?.getParcelable("card", Card::class.java) ?: Card()
+        } else {
+            transactionList = arguments?.getParcelableArrayList("transactions")!!
+            categoryList = arguments?.getParcelableArrayList("categories")!!
+            card = arguments?.getParcelable("card")!!
         }
 
         setUpChartForPeriod("24h", binding)
